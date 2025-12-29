@@ -258,6 +258,12 @@
         </p>
 
         <form id="qna-form" class="space-y-4">
+          <!-- ✅ 여기(폼 맨 위)에 메시지 영역 추가 -->
+          <p id="qna-success" class="hidden mb-4 text-sm text-green-600">
+            <span lang="ko">문의가 접수되었습니다.</span>
+            <span lang="en">Your inquiry has been received.</span>
+          </p>
+            
           <div class="grid md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium mb-1">
@@ -447,17 +453,25 @@
   });
 
   // 예시: 지금은 저장 기능 없이 “제출됨”만 표시
-  document.getElementById('qna-form')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('문의가 접수되었습니다. (현재는 화면 예시이며 실제 전송은 별도 연결이 필요합니다.)');
+document.getElementById('qna-form')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const msg = document.getElementById('qna-success');
+  msg?.classList.remove('hidden');
+
+  setTimeout(() => {
+    msg?.classList.add('hidden');
     closeModal();
-  });
+  }, 1200);
+});
+
 </script>
 
 
     
 </body>
 </html>
+
 
 
 
