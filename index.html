@@ -230,10 +230,114 @@
                 <span lang="ko">축산 농가, 수정란 생산처 및 난임 센터 파트너십을 환영합니다.</span>
                 <span lang="en">We welcome partnerships with livestock farms, embryo producers, and fertility clinics.</span>
             </p>
-            <div class="bg-osb-navy text-white px-12 py-10 rounded-[3rem] inline-block shadow-xl">
-                <p class="text-sm opacity-80 mb-2 font-bold uppercase tracking-widest">Partnership Inquiry</p>
-                <p class="text-2xl font-bold italic">OneStep Bion</p>
+            <button type="button" id="open-qna"
+              class="bg-osb-navy text-white px-12 py-10 rounded-[3rem] inline-block shadow-xl hover:opacity-90 transition">
+              <p class="text-sm opacity-80 mb-2 font-bold uppercase tracking-widest">PARTNERSHIP INQUIRY</p>
+              <p class="text-2xl font-bold italic">OneStep Bion</p>
+            </button>
+<!-- ✅ 문의 폼 모달 (qna.php 느낌의 문의작성 화면) -->
+<div id="qna-modal" class="fixed inset-0 z-[999] hidden">
+  <!-- 배경 -->
+  <div class="absolute inset-0 bg-black/50" id="qna-backdrop"></div>
+
+  <!-- 모달 박스 -->
+  <div class="relative min-h-full flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+      <div class="flex items-center justify-between px-8 py-6 border-b border-gray-100">
+        <h3 class="text-xl font-bold text-osb-navy">
+          <span lang="ko">파트너십 문의</span>
+          <span lang="en">Partnership Inquiry</span>
+        </h3>
+        <button type="button" id="close-qna" class="text-gray-400 hover:text-gray-700 text-2xl leading-none">&times;</button>
+      </div>
+
+      <div class="px-8 py-6">
+        <p class="text-gray-500 mb-6 text-sm leading-relaxed">
+          <span lang="ko">아래 내용을 작성해 주시면 담당자가 확인 후 연락드리겠습니다.</span>
+          <span lang="en">Please fill out the form below and we’ll get back to you.</span>
+        </p>
+
+        <form id="qna-form" class="space-y-4">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">
+                <span lang="ko">이름</span><span lang="en">Name</span>
+              </label>
+              <input class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-osb-green"
+                     type="text" name="name" required>
             </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">
+                <span lang="ko">회사/기관</span><span lang="en">Company/Organization</span>
+              </label>
+              <input class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-osb-green"
+                     type="text" name="company">
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">
+                <span lang="ko">연락처</span><span lang="en">Phone</span>
+              </label>
+              <input class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-osb-green"
+                     type="tel" name="phone" placeholder="010-0000-0000">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">
+                <span lang="ko">이메일</span><span lang="en">Email</span>
+              </label>
+              <input class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-osb-green"
+                     type="email" name="email" required>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-1">
+              <span lang="ko">제목</span><span lang="en">Subject</span>
+            </label>
+            <input class="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-osb-green"
+                   type="text" name="subject" required>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-1">
+              <span lang="ko">문의 내용</span><span lang="en">Message</span>
+            </label>
+            <textarea class="w-full rounded-xl border border-gray-200 px-4 py-3 min-h-[140px] focus:outline-none focus:ring-2 focus:ring-osb-green"
+                      name="message" required></textarea>
+          </div>
+
+          <div class="flex items-start gap-3 pt-2">
+            <input id="agree" type="checkbox" class="mt-1" required>
+            <label for="agree" class="text-sm text-gray-500 leading-relaxed">
+              <span lang="ko">개인정보 수집 및 이용에 동의합니다.</span>
+              <span lang="en">I agree to the collection and use of personal information.</span>
+            </label>
+          </div>
+
+          <div class="pt-4 flex flex-col sm:flex-row gap-3 sm:justify-end">
+            <button type="button" id="cancel-qna"
+                    class="px-6 py-3 rounded-full border border-gray-200 text-gray-700 hover:bg-gray-50 transition">
+              <span lang="ko">취소</span><span lang="en">Cancel</span>
+            </button>
+            <button type="submit"
+                    class="px-6 py-3 rounded-full bg-osb-navy text-white font-bold hover:opacity-90 transition">
+              <span lang="ko">문의 등록</span><span lang="en">Submit</span>
+            </button>
+          </div>
+
+          <p class="text-xs text-gray-400 pt-2">
+            <span lang="ko">※ 현재는 화면 구성 예시입니다. 실제 “등록” 저장/메일전송은 서버 또는 폼 서비스(Formspree 등) 연결이 필요합니다.</span>
+            <span lang="en">※ This is a UI example. To actually submit/store/send email, you need a backend or a form service.</span>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
         </div>
     </section>
 
@@ -316,11 +420,45 @@
 
   document.addEventListener("DOMContentLoaded", loadFooter);
 </script>
+<script>
+  const openBtn = document.getElementById('open-qna');
+  const modal = document.getElementById('qna-modal');
+  const backdrop = document.getElementById('qna-backdrop');
+  const closeBtn = document.getElementById('close-qna');
+  const cancelBtn = document.getElementById('cancel-qna');
+
+  function openModal() {
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  openBtn?.addEventListener('click', openModal);
+  closeBtn?.addEventListener('click', closeModal);
+  cancelBtn?.addEventListener('click', closeModal);
+  backdrop?.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+  });
+
+  // 예시: 지금은 저장 기능 없이 “제출됨”만 표시
+  document.getElementById('qna-form')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('문의가 접수되었습니다. (현재는 화면 예시이며 실제 전송은 별도 연결이 필요합니다.)');
+    closeModal();
+  });
+</script>
 
 
     
 </body>
 </html>
+
 
 
 
