@@ -5,39 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OneStep Bion | AI 배아 선별 솔루션</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=YOUR_NAVER_MAP_CLIENT_ID"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
 
-        /* 1. 자석 스크롤을 위한 필수 설정 */
-        html {
-            height: 100%;
-            overflow: hidden; /* 브라우저 기본 스크롤 충돌 방지 */
-        }
-
-        body { 
-            font-family: 'Noto Sans KR', sans-serif; 
+        /* 1. 스크롤 제어를 위한 필수 설정 */
+        html, body {
             margin: 0;
             padding: 0;
+            width: 100%;
             height: 100%;
-            overflow-y: auto;           /* 세로 스크롤 허용 */
-            scroll-snap-type: y mandatory; /* 자석 효과 활성화 */
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch; /* 모바일 대응 */
+            overflow: hidden; /* 자바스크립트로 제어하기 위해 기본 스크롤바 숨김 */
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
-        /* 2. 각 섹션을 화면 높이(100%)로 고정 */
+        /* 2. 각 섹션 고정 */
         section {
-            scroll-snap-align: start;   /* 스크롤 멈춤 지점 */
-            scroll-snap-stop: always;    /* 한 칸씩만 이동 */
-            height: 100vh;              /* 화면 높이 꽉 채움 */
             width: 100%;
+            height: 100vh; /* 무조건 화면 꽉 채움 */
             position: relative;
-            overflow: hidden;           /* 내용 넘침 방지 */
-            display: flex;              /* 내부 콘텐츠 중앙 정렬을 위해 추가 */
+            display: flex;
             flex-direction: column;
             justify-content: center;
+            overflow: hidden;
         }
 
         .bg-osb-navy { background-color: #00427A; }
@@ -48,9 +38,6 @@
         /* 언어 토글 설정 */
         html[lang="ko"] [lang="en"] { display: none !important; }
         html[lang="en"] [lang="ko"] { display: none !important; }
-
-        /* 내비게이션 바는 자석 스크롤 대상에서 제외 */
-        nav { scroll-snap-align: none; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
@@ -61,108 +48,116 @@
                 <img src="assets/images/logo.png" alt="로고" class="h-12 w-auto brightness-0 invert">
             </div>
             <div class="hidden md:flex gap-8 font-medium">
-                <a href="#about" class="hover:text-osb-green transition">회사소개</a>
-                <a href="#technology" class="hover:text-osb-green transition">기술소개</a>
-                <a href="#product" class="hover:text-osb-green transition">제품소개</a>
-                <a href="#contact" class="hover:text-osb-green transition">문의사항</a>
+                <a href="javascript:void(0)" onclick="moveSection(0)" class="hover:text-osb-green transition">회사소개</a>
+                <a href="javascript:void(0)" onclick="moveSection(1)" class="hover:text-osb-green transition">기술소개</a>
+                <a href="javascript:void(0)" onclick="moveSection(2)" class="hover:text-osb-green transition">제품소개</a>
+                <a href="javascript:void(0)" onclick="moveSection(3)" class="hover:text-osb-green transition">문의사항</a>
             </div>
         </div>
     </nav>
 
-    <section id="about">
-        <div class="absolute inset-0 z-0">
-            <img src="assets/images/main.png" alt="Main Background" class="w-full h-full object-cover">
-            )을 해제하세요 -->
+    <div id="fullpage-wrapper">
+        <section class="full-section">
+            <div class="absolute inset-0 z-0">
+                <img src="assets/images/main.png" alt="Main Background" class="w-full h-full object-cover">
             </div>
-
-        <div class="relative z-10 max-w-7xl mx-auto px-6 text-center text-white hero-text-shadow">
-            <h2 class="text-osb-green font-bold mb-6 tracking-[0.2em] text-sm md:text-base uppercase">
-                One Step Closer to a Happy Tomorrow
-            </h2>
-            <div lang="ko">
-                <h1 class="font-bold leading-tight mb-8 text-[clamp(2rem,7vw,4.5rem)]">
-                    AI와 타임랩스로 완성하는<br>
-                    <span class="text-white">프리미엄 배아 선별</span>
-                </h1>
-                <p class="text-lg md:text-xl text-gray-100 mb-10 leading-relaxed max-w-2xl mx-auto">
-                    원스텝바이온은 독자적인 광학 기술과 AI 알고리즘을 통해<br class="hidden md:block">
-                    수정란 선별의 정확도를 극대화하여 임신 성공률의 새로운 기준을 제시합니다.
-                </p>
-                <div class="flex justify-center gap-4">
-                    <a href="#technology" class="border-2 border-white text-white px-10 py-3 rounded-full font-bold hover:bg-white hover:text-osb-navy transition-all duration-300">
-                        기술력 확인하기
-                    </a>
+            <div class="relative z-10 max-w-7xl mx-auto px-6 text-center text-white hero-text-shadow">
+                <h2 class="text-osb-green font-bold mb-6 tracking-[0.2em] text-sm md:text-base uppercase">One Step Closer to a Happy Tomorrow</h2>
+                <div lang="ko">
+                    <h1 class="font-bold leading-tight mb-8 text-[clamp(2rem,7vw,4.5rem)]">AI와 타임랩스로 완성하는<br><span class="text-white">프리미엄 배아 선별</span></h1>
+                    <p class="text-lg md:text-xl text-gray-100 mb-10 leading-relaxed max-w-2xl mx-auto">원스텝바이온은 독자적인 광학 기술과 AI 알고리즘을 통해 수란 선별의 정확도를 극대화합니다.</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="technology" class="bg-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4">핵심 기술</h2>
-                <p class="text-gray-500">객관적이고 과학적인 데이터 기반 선별 솔루션 'Embrium'</p>
+        <section class="full-section bg-white" id="technology">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4">핵심 기술</h2>
+                    <p class="text-gray-500">데이터 기반 선별 솔루션 'Embrium'</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="p-8 border border-gray-100 rounded-3xl">
+                        <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl"><i class="fas fa-microscope"></i></div>
+                        <h3 class="text-xl font-bold mb-4">차별화된 광학 기술</h3>
+                    </div>
+                    <div class="p-8 border border-gray-100 rounded-3xl">
+                        <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl"><i class="fas fa-brain"></i></div>
+                        <h3 class="text-xl font-bold mb-4">Cell Stage Net (AI)</h3>
+                    </div>
+                    <div class="p-8 border border-gray-100 rounded-3xl">
+                        <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl"><i class="fas fa-chart-line"></i></div>
+                        <h3 class="text-xl font-bold mb-4">정량화된 데이터</h3>
+                    </div>
+                </div>
             </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <a href="tech-optics.html" class="block p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition">
-                    <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
-                        <i class="fas fa-microscope"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">차별화된 광학 기술</h3>
-                    <p class="text-gray-600 leading-relaxed text-sm">배아 스트레스와 오염 위험을 최소화하는 인큐베이터 내 실시간 모니터링</p>
-                </a>
-                <a href="tech-cell-stage-net.html" class="block p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition">
-                    <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">Cell Stage Net (AI)</h3>
-                    <p class="text-gray-600 leading-relaxed text-sm">YOLO 기반의 커스텀 모델을 통해 95.8%의 높은 분류 정확도 달성</p>
-                </a>
-                <a href="tech-quant-data.html" class="block p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition">
-                    <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">정량화된 데이터</h3>
-                    <p class="text-gray-600 leading-relaxed text-sm">배아 발달 타이밍 정량화로 개인차를 극복하고 고품질 선별 지원</p>
-                </a>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="product" class="bg-gray-50">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-12">
+        <section class="full-section bg-gray-50" id="product">
+            <div class="max-w-7xl mx-auto px-6 text-center">
                 <h2 class="text-3xl font-bold mb-4 text-osb-navy">제품소개</h2>
-                <p class="text-gray-500">원스텝바이온의 제품을 소개합니다.</p>
+                <div class="grid md:grid-cols-2 gap-8 mt-12">
+                    <div class="bg-white p-8 rounded-3xl shadow-sm"><h3>Embrium-HW001</h3></div>
+                    <div class="bg-white p-8 rounded-3xl shadow-sm"><h3>Embrium-Human</h3></div>
+                </div>
             </div>
-            <div class="grid md:grid-cols-2 gap-8">
-                <a href="product-1.html" class="block bg-white p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition">
-                    <h3 class="text-xl font-bold mb-3">Embrium-HW001</h3>
-                    <p class="text-gray-600 text-sm">한우용 타임랩스 배아모니터링 기기</p>
-                </a>
-                <a href="product-2.html" class="block bg-white p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition">
-                    <h3 class="text-xl font-bold mb-3">Embrium-Human</h3>
-                    <p class="text-gray-600 text-sm">난임 센터용 타임랩스 배아모니터링 기기</p>
-                </a>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="contact" class="bg-white">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-8 text-osb-navy">문의사항</h2>
-            <p class="text-xl text-gray-600 mb-12">축산 농가 및 난임 센터 파트너십을 환영합니다.</p>
-            <button type="button" id="open-qna" class="bg-osb-navy text-white px-12 py-10 rounded-[3rem] shadow-xl hover:opacity-90 transition">
-                <p class="text-sm opacity-80 mb-2 font-bold uppercase tracking-widest">PARTNERSHIP INQUIRY</p>
-                <p class="text-2xl font-bold italic">OneStep Bion</p>
-            </button>
-        </div>
-    </section>
+        <section class="full-section bg-white" id="contact">
+            <div class="max-w-4xl mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-8 text-osb-navy">문의사항</h2>
+                <button class="bg-osb-navy text-white px-12 py-10 rounded-[3rem] shadow-xl">PARTNERSHIP INQUIRY</button>
+            </div>
+        </section>
+    </div>
 
     <script>
-        // 언어 전환 및 모달 스크립트 등 기존 코드를 그대로 유지하시면 됩니다.
-        // (지면 관계상 핵심 자석 스크롤 작동 여부 확인을 위해 생략하지만, 
-        //  사용자님의 원래 코드에 있는 스크립트들을 그대로 이 자리에 두시면 됩니다.)
+        let currentSectionIndex = 0;
+        const sections = document.querySelectorAll('.full-section');
+        const totalSections = sections.length;
+        let isScrolling = false;
+
+        // 마우스 휠 이벤트 감지
+        window.addEventListener('wheel', function(e) {
+            if (isScrolling) return; // 이미 움직이는 중이면 무시
+
+            if (e.deltaY > 0) {
+                // 아래로 스크롤
+                if (currentSectionIndex < totalSections - 1) {
+                    moveSection(currentSectionIndex + 1);
+                }
+            } else {
+                // 위로 스크롤
+                if (currentSectionIndex > 0) {
+                    moveSection(currentSectionIndex - 1);
+                }
+            }
+        }, { passive: false });
+
+        // 섹션 이동 함수
+        function moveSection(index) {
+            isScrolling = true;
+            currentSectionIndex = index;
+            
+            // 블라인드 효과처럼 부드럽게 해당 위치로 이동
+            window.scrollTo({
+                top: window.innerHeight * index,
+                behavior: 'smooth'
+            });
+
+            // 스크롤 애니메이션이 끝날 때까지 대기 (약 0.8초)
+            setTimeout(() => {
+                isScrolling = false;
+            }, 800);
+        }
+
+        // 창 크기 조절 대응 (현재 섹션 유지)
+        window.addEventListener('resize', () => {
+            window.scrollTo({
+                top: window.innerHeight * currentSectionIndex,
+                behavior: 'auto'
+            });
+        });
     </script>
 </body>
 </html>
