@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cell Stage Net (AI) | OneStep Bion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+    body { font-family: 'Noto+Sans+KR', sans-serif; }
+    .bg-osb-navy { background-color: #00427A; }
+    .text-osb-green { color: #008B72; }
+    .gradient-osb { background: linear-gradient(135deg, #00427A 0%, #008B72 100%); }
+
+    html[lang="ko"] [lang="en"] { display: none !important; }
+    html[lang="en"] [lang="ko"] { display: none !important; }
+
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col bg-gray-50 text-gray-900">
+
+
+  <!-- ✅ nav는 index.html과 동일하게 (KR/EN 버튼 포함) 복사 -->
+  <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="index.html">
+          <img src="assets/images/logo.png" alt="OneStep Bion 로고" class="h-16 w-auto">
+        </a>
+      </div>
+
+      <div class="hidden md:flex gap-8 font-medium items-center">
+        <a href="index.html#technology" class="hover:text-osb-green transition">
+          <span lang="ko">기술소개</span><span lang="en">Technology</span>
+        </a>
+
+        <div class="flex items-center gap-2 ml-4 border-l pl-4 border-gray-200 text-sm">
+          <button onclick="changeLang('ko')" id="btn-ko" class="text-osb-navy font-bold">KR</button>
+          <span class="text-gray-300">|</span>
+          <button onclick="changeLang('en')" id="btn-en" class="text-gray-400 hover:text-osb-navy">EN</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ✅ 본문 -->
+  <main class="pt-28 pb-20 flex-1">
+
+    <div class="max-w-4xl mx-auto px-6">
+      <a href="index.html#technology" class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-osb-green transition mb-6">
+        <i class="fas fa-arrow-left"></i>
+        <span lang="ko">홈 화면으로 돌아가기</span>
+        <span lang="en">Back to Core Technology</span>
+      </a>
+
+      <div class="bg-white p-10 rounded-3xl border border-gray-100 shadow-sm">
+        <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
+          <i class="fas fa-brain"></i>
+        </div>
+
+        <h1 class="text-3xl font-bold mb-4">
+          <span lang="ko">Cell Stage Net (AI)</span>
+          <span lang="en">Cell Stage Net (AI)</span>
+        </h1> 
+
+        <img src="assets/images/tech2.png"
+           alt="차별화된 광학 기술"
+           class="w-full rounded-2xl border border-gray-100 mb-8" />
+        
+        <p class="text-gray-600 leading-relaxed mb-8">
+          ...
+        </p>
+
+        <p class="text-gray-600 leading-relaxed mb-8">
+          <span lang="ko">여기에 상세 설명을 넣으시면 됩니다. (원리, 장점, 적용 시나리오 등)</span>
+          <span lang="en">Put the detailed description here. (principle, benefits, use cases, etc.)</span>
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="p-6 rounded-2xl bg-gray-50 border border-gray-100">
+            <h3 class="font-bold mb-2">
+              <span lang="ko">핵심 포인트 1</span><span lang="en">Key Point 1</span>
+            </h3>
+            <p class="text-gray-600">
+              <span lang="ko">설명...</span><span lang="en">Details...</span>
+            </p>
+          </div>
+          <div class="p-6 rounded-2xl bg-gray-50 border border-gray-100">
+            <h3 class="font-bold mb-2">
+              <span lang="ko">핵심 포인트 2</span><span lang="en">Key Point 2</span>
+            </h3>
+            <p class="text-gray-600">
+              <span lang="ko">설명...</span><span lang="en">Details...</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+   <footer class="bg-[#2B2B31] text-white">
+        <div class="max-w-7xl mx-auto px-6 py-16">
+          <!-- ✅ 상단: 오시는길(클릭) + 네이버지도 링크 -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <button id="btn-directions"
+                type="button"
+                class="text-white/90 hover:text-white font-medium text-lg underline underline-offset-4 text-left"
+                aria-expanded="false">
+          <span lang="ko">오시는길</span>
+          <span lang="en">Directions</span>
+        </button>
+      
+        <a id="naver-map-link"
+           class="text-white/70 hover:text-white text-sm"
+           target="_blank" rel="noopener">
+          <span lang="ko">네이버 지도에서 보기 →</span>
+          <span lang="en">Open in Naver Map →</span>
+        </a>
+      </div>
+      
+      <!-- ✅ 펼쳐지는 지도 이미지(처음엔 숨김) -->
+      <div id="directions-panel" class="hidden">
+        <!-- 지도 이미지 파일을 프로젝트에 넣고 파일명만 맞추세요 -->
+        <img src="assets/images/map-hq.png"
+             alt="회사 위치 지도"
+             class="w-full max-w-4xl rounded-2xl border border-white/10"
+        />
+      
+        <p class="mt-4 text-white/70 text-sm leading-relaxed">
+          <span lang="ko">주소(본사): 광주광역시 북구 첨단과기로 123(오룡동) 창업진흥센터 A동(S8) 216-2호</span>
+          <span lang="en">HQ: Room 216-2, Building A (S8), Startup Promotion Center, 123 Cheomdan-gwagiro, Buk-gu, Gwangju</span>
+        </p>
+      </div>
+      
+     <!-- 기존 상단 라인 유지 -->
+    <div class="h-px bg-white/20 mb-10 mt-10"></div>
+
+
+    
+        <!-- ✅ 여기부터 2컬럼 -->
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
+          <!-- 왼쪽: 사업자정보 -->
+          <div class="space-y-3 text-lg font-normal leading-relaxed text-white/90 md:max-w-3xl">
+            <p>
+              <span lang="ko">사업자 등록번호:519-81-04251 | 대표:김기현</span>
+              <span lang="en">Business Reg. No.: 519-81-04251 | CEO: Ki-Hyun Kim</span>
+            </p>
+    
+            <p>
+              <span lang="ko">주소(본사):광주광역시 북구 첨단과기로 123(오룡동) 창업진흥센터 A동(S8) 216-2호</span>
+              <span lang="en">HQ: Room 216-2, Building A (S8), Startup Promotion Center, 123 Cheomdan-gwagiro, Buk-gu, Gwangju, Republic of Korea</span>
+            </p>
+    
+            <p>
+              <span lang="ko">대표번호: 062-0000-0000 | 팩스 : 062-0000-0000</span>
+              <span lang="en">Tel : +82-62-0000-0000 | Fax : +82-62-0000-0000</span>
+            </p>    
+              
+            
+            <p class="pt-12 text-base font-normal tracking-wide text-white/90">
+              <span lang="ko">COPYRIGHT©2026 ONESTEPBION.ALL RIGHT RESERVED.</span>
+              <span lang="en">COPYRIGHT©2026 ONESTEPBION. ALL RIGHTS RESERVED.</span>
+            </p>
+          </div>
+    
+          <!-- 오른쪽: 로고 -->
+          <div class="flex md:justify-end md:pt-2">
+            <img src="assets/images/logo.png" alt="Company Logo" class="h-16 w-auto opacity-90">
+          </div>
+        </div>
+        <!-- ✅ 여기까지 2컬럼 -->
+      </div>
+    </footer></footer>
+
+  <!-- ✅ index.html과 동일한 언어 스크립트 (저장/버튼 상태 유지) -->
+  <script>
+    const PAGE_TITLES = {
+      ko: '차별화된 광학 기술 | OneStep Bion',
+      en: 'Advanced Optical Technology | OneStep Bion'
+    };
+
+    function setLangButtons(lang) {
+      const btnKo = document.getElementById('btn-ko');
+      const btnEn = document.getElementById('btn-en');
+      if (!btnKo || !btnEn) return;
+
+      if (lang === 'ko') {
+        btnKo.className = 'text-osb-navy font-bold';
+        btnEn.className = 'text-gray-400 hover:text-osb-navy';
+      } else {
+        btnEn.className = 'text-osb-navy font-bold';
+        btnKo.className = 'text-gray-400 hover:text-osb-navy';
+      }
+    }
+
+    function changeLang(lang) {
+      const next = (lang === 'en') ? 'en' : 'ko';
+      document.documentElement.lang = next;
+      document.title = PAGE_TITLES[next] || document.title;
+      setLangButtons(next);
+      try { localStorage.setItem('lang', next); } catch (e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      let saved = null;
+      try { saved = localStorage.getItem('lang'); } catch (e) {}
+      const initial = (saved === 'en' || saved === 'ko') ? saved : (document.documentElement.lang || 'ko');
+      document.documentElement.lang = initial;
+      document.title = PAGE_TITLES[initial] || document.title;
+      setLangButtons(initial);
+    });
+  </script>
+
+  <script>
+  // ✅ 네이버 지도 링크 (주소 검색)
+  const HQ_ADDRESS_KO = "광주광역시 북구 첨단과기로 123(오룡동) 창업진흥센터 A동(S8) 216-2호";
+  const naverLink = "https://map.naver.com/p/search/" + encodeURIComponent(HQ_ADDRESS_KO);
+
+  const linkEl = document.getElementById("naver-map-link");
+  if (linkEl) linkEl.href = naverLink;
+
+  // ✅ 오시는길 패널 토글
+  const btn = document.getElementById("btn-directions");
+  const panel = document.getElementById("directions-panel");
+
+  if (btn && panel) {
+    btn.addEventListener("click", () => {
+      const isOpen = !panel.classList.contains("hidden");
+      if (isOpen) {
+        panel.classList.add("hidden");
+        btn.setAttribute("aria-expanded", "false");
+      } else {
+        panel.classList.remove("hidden");
+        btn.setAttribute("aria-expanded", "true");
+      }
+    });
+  }
+</script>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+

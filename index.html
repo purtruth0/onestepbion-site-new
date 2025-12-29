@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneStep Bion | AI 배아 선별 솔루션</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=YOUR_NAVER_MAP_CLIENT_ID"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+        body { font-family: 'Noto+Sans+KR', sans-serif; }
+        .bg-osb-navy { background-color: #00427A; } /* 로고 네이비 */
+        .text-osb-green { color: #008B72; } /* 로고 그린 */
+        .gradient-osb { background: linear-gradient(135deg, #00427A 0%, #008B72 100%); }
+
+        /* ✅ 변경: JS로 display를 건드리지 않고, html lang 값으로 자동 토글 */
+        html[lang="ko"] [lang="en"] { display: none !important; }
+        html[lang="en"] [lang="ko"] { display: none !important; }
+
+        html { scroll-behavior: smooth; } /* 메뉴 클릭 시 부드럽게 이동 */
+        section { scroll-margin-top: 5rem; } /* 메뉴 클릭 시 제목 가림 방지 */
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="logo.png" alt="OneStep Bion 로고" class="h-16 w-auto">
+            </div>
+            <div class="hidden md:flex gap-8 font-medium">
+             <a href="#about" class="hover:text-osb-green transition">
+                    <span lang="ko">회사소개</span><span lang="en">About</span>
+                </a>
+                <a href="#technology" class="hover:text-osb-green transition">
+                    <span lang="ko">기술소개</span><span lang="en">Technology</span>
+                </a>
+                <a href="#product" class="hover:text-osb-green transition">
+                    <span lang="ko">제품소개</span><span lang="en">Products</span>
+                </a>
+                <a href="#contact" class="hover:text-osb-green transition">
+                    <span lang="ko">문의사항</span><span lang="en">Contact</span>
+                </a>
+
+               <div class="flex items-center gap-2 ml-4 border-l pl-4 border-gray-200 text-sm">
+               <button onclick="changeLang('ko')" id="btn-ko" class="text-osb-navy font-bold">KR</button>
+               <span class="text-gray-300">|</span>
+               <button onclick="changeLang('en')" id="btn-en" class="text-gray-400 hover:text-osb-navy">EN</button>
+             </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="lg:w-2/3">
+
+            <!-- ✅ 추가: 이 문구도 언어 태그로 감싸면 더 깔끔하게 전환됩니다 -->
+            <h2 class="text-osb-green font-bold mb-4">
+                <span lang="ko">One Step Closer to a Happy Tomorrow</span>
+                <span lang="en">One Step Closer to a Happy Tomorrow</span>
+            </h2>
+
+            <div lang="ko">                
+                <h1 class="font-bold leading-tight mb-8">
+                  <span class="block whitespace-nowrap text-[clamp(2rem,6vw,4.5rem)]">
+                    AI와 타임랩스로 완성하는
+                  </span>
+                  <span class="block whitespace-nowrap text-osb-navy text-[clamp(2rem,6vw,4.5rem)]">
+                    프리미엄 배아 선별
+                  </span>
+                </h1>
+                <p class="text-xl text-gray-600 mb-10 leading-relaxed">
+                    원스텝바이온은 독자적인 광학 기술과 AI 알고리즘을 통해 <br class="hidden md:block">
+                    수정란 선별의 정확도를 극대화하여 임신 성공률의 새로운 기준을 제시합니다.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#technology" class="bg-osb-navy text-white px-8 py-4 rounded-full font-bold hover:opacity-90 transition">기술력 확인하기</a>
+                </div>
+            </div>
+
+            <div lang="en">
+                <h1 class="text-5xl lg:text-7xl font-bold leading-tight mb-8">
+                    Premium Embryo Selection <br>
+                    <span class="text-osb-navy">via AI & Time-lapse</span>
+                </h1>
+                <p class="text-xl text-gray-600 mb-10 leading-relaxed">
+                    OneStep Bion sets a new standard for pregnancy success rates by maximizing selection accuracy through proprietary optical technology and AI.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#technology" class="bg-osb-navy text-white px-8 py-4 rounded-full font-bold hover:opacity-90 transition">View Technology</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="absolute top-0 right-0 w-1/3 h-full bg-gray-100 -z-10 skew-x-12 transform translate-x-20"></div>
+  </section>
+
+    <section id="technology" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">
+                    <span lang="ko">핵심 기술</span>
+                    <span lang="en">Core Technology</span>
+                </h2>
+                <p class="text-gray-500">
+                    <span lang="ko">객관적이고 과학적인 데이터 기반 선별 솔루션 'Embrium'</span>
+                    <span lang="en">Objective, science-based, data-driven selection solution “Embrium”</span>
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12">
+            <!-- 기존: <div class="p-8 ..."> ... </div> -->
+            <!-- 변경: <a href="..." class="block ..."> ... </a> -->
+            
+            <a href="tech-optics.html"
+               class="block p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
+              <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
+                <i class="fas fa-microscope"></i>
+              </div>
+              <h3 class="text-xl font-bold mb-4">
+                <span lang="ko">차별화된 광학 기술</span>
+                <span lang="en">Advanced Optical Tech</span>
+              </h3>
+              <p class="text-gray-600 leading-relaxed">
+                <span lang="ko">배아 스트레스와 오염 위험을 최소화하는 인큐베이터 내 실시간 모니터링</span>
+                <span lang="en">In-situ monitoring minimizing embryo stress and contamination risk</span>
+              </p>
+            </a>
+            
+            <a href="tech-cell-stage-net.html"
+               class="block p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
+              <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
+                <i class="fas fa-brain"></i>
+              </div>
+              <h3 class="text-xl font-bold mb-4">
+                <span lang="ko">Cell Stage Net (AI)</span>
+                <span lang="en">Cell Stage Net (AI)</span>
+              </h3>
+              <p class="text-gray-600 leading-relaxed">
+                <span lang="ko">YOLO 기반의 커스텀 모델을 통해 95.8%의 높은 배아 발달 단계 분류 정확도 달성</span>
+                <span lang="en">Achieved 95.8% embryo-stage classification accuracy with a YOLO-based custom model</span>
+              </p>
+            </a>
+            
+            <a href="tech-quant-data.html"
+               class="block p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
+              <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h3 class="text-xl font-bold mb-4">
+                <span lang="ko">정량화된 데이터</span>
+                <span lang="en">Quantified Data</span>
+              </h3>
+              <p class="text-gray-600 leading-relaxed">
+                <span lang="ko">배아 발달 타이밍 정량화로 선별사 개인차를 극복하고 일관된 고품질 선별 지원</span>
+                <span lang="en">Quantifies development timing to reduce evaluator bias and support consistent, high-quality selection</span>
+              </p>
+            </a>
+              
+            </div>
+        </div>
+    </section>
+
+  <section id="product" class="py-24 bg-gray-50 border-t border-gray-100">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold mb-4 text-osb-navy">
+        <span lang="ko">제품소개</span>
+        <span lang="en">Products</span>
+      </h2>
+      <p class="text-gray-500">
+        <span lang="ko">원스텝바이온의 제품을 소개합니다.</span>
+        <span lang="en">Introducing OneStep Bion’s products.</span>
+      </p>
+    </div>
+
+    <!-- 2개만 보여주기 -->
+    <div class="grid md:grid-cols-2 gap-12">
+      <!-- 제품 1 -->
+      <a href="product-1.html"
+         class="block bg-white p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
+        <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
+          <i class="fas fa-cube"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-3">
+          <span lang="ko">Embrium-HW001</span>
+          <span lang="en">Embrium-HW001</span>
+        </h3>
+        <p class="text-gray-600 leading-relaxed">
+          <span lang="ko"> 한우용 타임랩스 배아모니터링 기기 </span>
+          <span lang="en"> Time-lapse embryo monitoring system for Hanwoo </span>
+        </p>
+        <p class="mt-5 text-sm font-bold text-osb-green">
+          <span lang="ko">자세히 보기 →</span><span lang="en">View details →</span>
+        </p>
+      </a>
+
+      <!-- 제품 2 -->
+      <a href="product-2.html"
+         class="block bg-white p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
+        <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
+          <i class="fas fa-cube"></i>
+        </div>
+        <h3 class="text-xl font-bold mb-3">
+          <span lang="ko"> Embrium-Human </span>
+          <span lang="en"> Embrium-Human </span>
+        </h3>
+        <p class="text-gray-600 leading-relaxed">
+          <span lang="ko"> 난임 센터용 타임랩스 배아모니터링 기기 </span>
+          <span lang="en"> Time-lapse embryo monitoring system for fertility clinics </span>
+        </p>
+        <p class="mt-5 text-sm font-bold text-osb-green">
+          <span lang="ko">자세히 보기 →</span><span lang="en">View details →</span>
+        </p>
+      </a>
+    </div>
+  </div>
+</section>
+
+    <section id="contact" class="py-24 bg-white border-t border-gray-100">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-8 text-osb-navy">
+                <span lang="ko">문의사항</span>
+                <span lang="en">Contact</span>
+            </h2>
+            <p class="text-xl text-gray-600 mb-12">
+                <span lang="ko">축산 농가, 수정란 생산처 및 난임 센터 파트너십을 환영합니다.</span>
+                <span lang="en">We welcome partnerships with livestock farms, embryo producers, and fertility clinics.</span>
+            </p>
+            <div class="bg-osb-navy text-white px-12 py-10 rounded-[3rem] inline-block shadow-xl">
+                <p class="text-sm opacity-80 mb-2 font-bold uppercase tracking-widest">Partnership Inquiry</p>
+                <p class="text-2xl font-bold italic">OneStep Bion</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="site-footer"></div>
+
+
+<script>
+    /* ✅ 변경된 언어전환 로직:
+       - display를 직접 조작하지 않음 (CSS가 html[lang] 기반으로 자동 토글)
+       - 버튼 스타일 + title 변경 + localStorage 저장
+    */
+    const PAGE_TITLES = {
+        ko: 'OneStep Bion | AI 배아 선별 솔루션',
+        en: 'OneStep Bion | AI Embryo Selection Solution'
+    };
+
+    function setLangButtons(lang) {
+        const btnKo = document.getElementById('btn-ko');
+        const btnEn = document.getElementById('btn-en');
+        if (!btnKo || !btnEn) return;
+
+        if (lang === 'ko') {
+            btnKo.className = 'text-osb-navy font-bold';
+            btnEn.className = 'text-gray-400 hover:text-osb-navy';
+        } else {
+            btnEn.className = 'text-osb-navy font-bold';
+            btnKo.className = 'text-gray-400 hover:text-osb-navy';
+        }
+    }
+
+    function changeLang(lang) {
+        const next = (lang === 'en') ? 'en' : 'ko';
+        document.documentElement.lang = next;
+        document.title = PAGE_TITLES[next] || document.title;
+
+        setLangButtons(next);
+        try { localStorage.setItem('lang', next); } catch (e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        let saved = null;
+        try { saved = localStorage.getItem('lang'); } catch (e) {}
+        const initial = (saved === 'en' || saved === 'ko') ? saved : (document.documentElement.lang || 'ko');
+
+        // 초기 상태 한 번 적용
+        document.documentElement.lang = initial;
+        document.title = PAGE_TITLES[initial] || document.title;
+        setLangButtons(initial);
+    });
+</script>
+
+<script>
+  async function loadFooter() {
+    // ✅ 어떤 페이지에서도 동일하게 쓰기 좋게 절대경로 추천
+    const res = await fetch("/partials/footer.html", { cache: "no-cache" });
+    const html = await res.text();
+    document.getElementById("site-footer").innerHTML = html;
+
+    // ✅ footer 안 버튼/링크 이벤트 초기화 (아래 함수)
+    initFooterDirections();
+  }
+
+  function initFooterDirections() {
+    // ✅ 아래 내용은 "기존 index.html에 있던 네이버 지도/토글 스크립트"를
+    //    그대로 가져오되, 이 함수 안으로 넣으면 됩니다.
+    //    (현재 index.html의 이 부분을 통째로 옮기세요) :contentReference[oaicite:2]{index=2}
+
+    const HQ_ADDRESS_KO = "광주광역시 북구 첨단과기로 123(오룡동) 창업진흥센터 A동(S8) 216-2호";
+    const naverLink = "https://map.naver.com/p/search/" + encodeURIComponent(HQ_ADDRESS_KO);
+    const linkEl = document.getElementById("naver-map-link");
+    if (linkEl) linkEl.href = naverLink;
+
+    const btn = document.getElementById("btn-directions");
+    const panel = document.getElementById("directions-panel");
+
+    // ⚠️ 여기 아래로도 원래 코드 그대로 이어서 넣으시면 됩니다.
+    // (지도 initNaverMapOnce, btn 클릭 토글 등)
+    // ...
+  }
+
+  document.addEventListener("DOMContentLoaded", loadFooter);
+</script>
+
+
+    
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
