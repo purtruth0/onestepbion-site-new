@@ -326,7 +326,19 @@
 
     // ⚠️ 여기 아래로도 원래 코드 그대로 이어서 넣으시면 됩니다.
     // (지도 initNaverMapOnce, btn 클릭 토글 등)
-    // ...
+       if (btn && panel) {
+      btn.addEventListener("click", () => {
+        const isOpen = !panel.classList.contains("hidden");
+        if (isOpen) {
+          panel.classList.add("hidden");
+          btn.setAttribute("aria-expanded", "false");
+        } else {
+          panel.classList.remove("hidden");
+          btn.setAttribute("aria-expanded", "true");
+        }
+      });
+    }
+
   }
 
   document.addEventListener("DOMContentLoaded", loadFooter);
@@ -371,6 +383,7 @@
     
 </body>
 </html>
+
 
 
 
