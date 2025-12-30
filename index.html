@@ -24,13 +24,13 @@
 </head>
 <body class="bg-gray-50 text-gray-900">
 
-    <nav class="fixed w-full z-50 bg-transparent">
+    <nav id="site-nav" class="fixed w-full z-50 bg-transparent transition-colors duration-300">
       <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <div class="flex items-center">
           <img src="./assets/images/logo.png" alt="OneStep Bion 로고" class="h-16 w-auto">
         </div>
     
-        <div class="hidden md:flex gap-8 items-center text-white font-bold">
+       <div id="nav-menu" class="hidden md:flex gap-8 items-center text-white font-bold transition-colors duration-300">
           <a href="#about" class="hover:text-white/80 transition">
             <span lang="ko">회사소개</span><span lang="en">About</span>
           </a>
@@ -308,10 +308,56 @@
   document.addEventListener("DOMContentLoaded", loadFooter);
 </script>
 
+<script>
+  // 스크롤 위치에 따라 nav 색상 자동 전환
+  const nav = document.getElementById('site-nav');
+  const menu = document.getElementById('nav-menu');
+
+  function setNavTheme(isLightBg) {
+    if (!nav || !menu) return;
+
+    if (isLightBg) {
+      // ✅ 밝은 배경 구간: nav 흰 배경 + 어두운 글자
+      nav.classList.remove('bg-transparent');
+      nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
+
+      menu.classList.remove('text-white');
+      menu.classList.add('text-gray-900');
+
+      // 언어 버튼 색도 같이 조정(있으면)
+      const ko = document.getElementById('btn-ko');
+      const en = document.getElementById('btn-en');
+      if (ko) ko.className = 'text-gray-900 font-bold';
+      if (en) en.className = 'text-gray-500 hover:text-gray-900 font-bold';
+    } else {
+      // ✅ 히어로 구간: nav 투명 + 흰 글자
+      nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
+      nav.classList.add('bg-transparent');
+
+      menu.classList.remove('text-gray-900');
+      menu.classList.add('text-white');
+
+      const ko = document.getElementById('btn-ko');
+      const en = document.getElementById('btn-en');
+      if (ko) ko.className = 'text-white font-bold';
+      if (en) en.className = 'text-white/70 hover:text-white font-bold';
+    }
+  }
+
+  // 히어로 아래로 조금만 내려가면 전환되게(기준값 조절 가능)
+  function onScroll() {
+    const y = window.scrollY || document.documentElement.scrollTop;
+    setNavTheme(y > 80); // 80px 이상 스크롤하면 밝은 배경 모드
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  document.addEventListener('DOMContentLoaded', onScroll);
+</script>
 
     
 </body>
 </html>
+
 
 
 
