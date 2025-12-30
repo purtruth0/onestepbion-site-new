@@ -21,21 +21,24 @@
         html { scroll-behavior: smooth; } /* 메뉴 클릭 시 부드럽게 이동 */
         section { scroll-margin-top: 5rem; } /* 메뉴 클릭 시 제목 가림 방지 */
 
-        /* ✅ “페이지처럼 착” 스크롤: Scroll Snap */
+         /* ✅ “페이지처럼 착” 스크롤: Scroll Snap (확실 버전) */
         html, body { height: 100%; }
         
-        body {
-          overflow-y: scroll;
-          scroll-snap-type: y mandatory;   /* 세로 방향 스냅 */
-          scroll-padding-top: 5rem;        /* 고정 nav(약 80px)만큼 위 여백 */
+        html {
+          scroll-snap-type: y mandatory;   /* ✅ 스냅은 html에 거는 게 더 안정적 */
+          scroll-padding-top: 5rem;        /* ✅ 고정 nav 높이 보정 */
         }
         
-        /* 각 섹션이 스냅 포인트가 되도록 */
+        body {
+          overflow-y: auto;                /* 기본 스크롤 유지 */
+        }
+        
+        /* 스냅 대상(4개 섹션) */
         section {
           scroll-snap-align: start;
-          scroll-snap-stop: always;        /* 더 ‘착’ 붙는 느낌(지원 브라우저에서) */
+          scroll-snap-stop: always;
         }
-        
+
         /* footer(사이트푸터 div)는 스냅 포인트에서 제외 */
         #site-footer { scroll-snap-align: none; }
         
@@ -103,12 +106,12 @@
           Premium Embryo Selection<br>
           via AI & Time-lapse
         </h1>
-          </dive>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="technology" class="min-h-screen py-24 bg-white">
+    <section id="technology" class="h-screen pt-24 pb-10 bg-white overflow-y-auto">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
                 <h2 class="text-3xl font-bold mb-4">
@@ -174,7 +177,7 @@
         </div>
     </section>
 
-  <section id="product" class="min-h-screen py-24 bg-gray-50 border-t border-gray-100">
+  <section id="product" class="h-screen pt-24 pb-10 bg-gray-50 border-t border-gray-100 overflow-y-auto">
   <div class="max-w-7xl mx-auto px-6">
     <div class="text-center mb-16">
       <h2 class="text-3xl font-bold mb-4 text-osb-navy">
@@ -230,7 +233,7 @@
   </div>
 </section>
 
-   <section id="contact" class="min-h-screen py-24 bg-white border-t border-gray-100">
+   <section id="contact" class="h-screen pt-24 pb-10 bg-white border-t border-gray-100 overflow-y-auto">
         <div class="max-w-4xl mx-auto px-6 text-center">
             <h2 class="text-3xl font-bold mb-8 text-osb-navy">
                 <span lang="ko">문의사항</span>
@@ -376,6 +379,7 @@
     
 </body>
 </html>
+
 
 
 
