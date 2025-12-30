@@ -375,10 +375,49 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   document.addEventListener('DOMContentLoaded', onScroll);
 </script>
+<script>
+(() => {
+  const sections = Array.from(document.querySelectorAll('section'));
+  if (!sections.length) return;
+
+  let lock = false;
+
+  function nearestIndex() {
+    const y = window.scrollY + 1;
+    let best = 0, bestDist = Infinity;
+    sections.forEach((sec, i) => {
+      const d = Math.abs(sec.offsetTop - y);
+      if (d < bestDist) { bestDist = d; best = i; }
+    });
+    return best;
+  }
+
+  function goTo(i) {
+    const navOffset = 80; // nav 높이(대략). 필요하면 조정
+    const top = sections[i].offsetTop - navOffset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  window.addEventListener('wheel', (e) => {
+    // 입력 중/모달 등 예외 처리 원하면 여기서 필터 추가 가능
+    e.preventDefault();
+    if (lock) return;
+    lock = true;
+
+    const cur = nearestIndex();
+    const next = e.deltaY > 0 ? Math.min(cur + 1, sections.length - 1)
+                             : Math.max(cur - 1, 0);
+    goTo(next);
+
+    setTimeout(() => (lock = false), 700);
+  }, { passive: false });
+})();
+</script>
 
     
 </body>
 </html>
+
 
 
 
