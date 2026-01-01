@@ -339,23 +339,24 @@
   const menu = document.getElementById('nav-menu');
   const hero = document.getElementById('hero');
 
-  function setNavTheme(isLightBg) {
-    if (!nav || !menu) return;
+ function setNavTheme(isLightBg) {
+  if (!nav || !menu) return;
 
-    if (isLightBg) {
-      nav.classList.remove('bg-transparent');
-      nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
+  if (isLightBg) {
+    nav.classList.remove('bg-transparent');
+    nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
 
-      menu.classList.remove('text-white');
-      menu.classList.add('text-gray-900');
-    } else {
-      nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
-      nav.classList.add('bg-transparent');
+    menu.classList.remove('text-white', 'nav-dark');
+    menu.classList.add('text-gray-900', 'nav-light');   // ✅ 추가
+  } else {
+    nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
+    nav.classList.add('bg-transparent');
 
-      menu.classList.remove('text-gray-900');
-      menu.classList.add('text-white');
-    }
+    menu.classList.remove('text-gray-900', 'nav-light');
+    menu.classList.add('text-white', 'nav-dark');       // ✅ 추가
   }
+}
+
 
   function onScroll() {
     const y = window.scrollY || document.documentElement.scrollTop;
@@ -373,6 +374,7 @@
     
 </body>
 </html>
+
 
 
 
