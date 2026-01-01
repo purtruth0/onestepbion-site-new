@@ -363,7 +363,7 @@
         e.preventDefault();
 
         const step = 0.12;
-        scale = e.deltaY > 0 ? scale + step : scale - step;
+        scale = e.deltaY < 0 ? scale + step : scale - step; // ✅ 휠 UP(음수)=확대
         scale = Math.max(MIN, Math.min(MAX, scale));
         apply();
       }, { passive: false });
@@ -426,6 +426,7 @@
     
 </body>
 </html>
+
 
 
 
