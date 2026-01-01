@@ -201,36 +201,43 @@
     });
   </script>
 
-  <script>
-    // ✅ 네이버 지도 링크 (주소 검색)
-    const HQ_ADDRESS_KO = "광주광역시 북구 첨단과기로 123(오룡동) 창업진흥센터 A동(S8) 216-2호";
-    const naverLink = "https://map.naver.com/p/search/" + encodeURIComponent(HQ_ADDRESS_KO);
-  
-    const linkEl = document.getElementById("naver-map-link");
-    if (linkEl) linkEl.href = naverLink;
-  
-    // ✅ 오시는길 패널 토글
-    const btn = document.getElementById("btn-directions");
-    const panel = document.getElementById("directions-panel");
-  
-    if (btn && panel) {
-      btn.addEventListener("click", () => {
-        const isOpen = !panel.classList.contains("hidden");
-        if (isOpen) {
-          panel.classList.add("hidden");
-          btn.setAttribute("aria-expanded", "false");
-        } else {
-          panel.classList.remove("hidden");
-          btn.setAttribute("aria-expanded", "true");
-        }
-      });
+<script>
+  function loadScriptOnce(src) {
+    return new Promise((resolve, reject) => {
+      if (document.querySelector(`script[data-src="${src}"]`)) return resolve();
+      const s = document.createElement("script");
+      s.src = src;
+      s.defer = true;
+      s.dataset.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  async function loadFooter() {
+    const holder = document.getElementById("site-footer");
+    if (!holder) return;
+
+    const res = await fetch("/partials/footer.html", { cache: "no-cache" });
+    holder.innerHTML = await res.text();
+
+    // ✅ footer 기능은 footer.js에서 공통 처리
+    if (!window.FooterDirections) {
+      await loadScriptOnce("/partials/footer.js");
     }
-  </script>
+    window.FooterDirections.init(holder);
+  }
+
+  document.addEventListener("DOMContentLoaded", loadFooter);
+</script>
+
 
 
   
 </body>
 </html>
+
 
 
 
