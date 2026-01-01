@@ -21,9 +21,14 @@
 <!-- ✅ 펼쳐지는 지도 이미지(처음엔 숨김) -->
 <div id="directions-panel" class="hidden">
     <!-- 지도 이미지 파일을 프로젝트에 넣고 파일명만 맞추세요 -->
-    <img src="./assets/images/map-hq.png"
-        alt="회사 위치 지도"
-       class="w-full max-w-4xl max-h-[45vh] object-contain rounded-2xl border border-white/10" />
+    <div class="overflow-hidden rounded-2xl border border-white/10">
+      <img id="map-img"
+           src="/assets/images/map-hq.png"
+           alt="회사 위치 지도"
+           class="w-full max-w-4xl block cursor-zoom-in select-none"
+           draggable="false" />
+    </div>
+
 
     <p class="mt-4 text-white/70 text-sm leading-relaxed">
     <span lang="ko">주소(본사): 광주광역시 북구 첨단과기로 123(오룡동) 창업진흥센터 A동(S8) 216-2호</span>
@@ -70,5 +75,6 @@
     <!-- ✅ 여기까지 2컬럼 -->
     </div>
 </footer>
+
 
 
