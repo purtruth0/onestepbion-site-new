@@ -44,7 +44,9 @@
 
         /* footer(사이트푸터 div)는 스냅 포인트에서 제외 */
         #site-footer { scroll-snap-align: none; }
-        
+          /* ✅ 메뉴 hover를 테마(밝은/어두운)별로 다르게 */
+      #nav-menu.nav-dark .nav-link:hover { color: rgba(255,255,255,.8); }   /* 히어로(어두운 배경) */
+      #nav-menu.nav-light .nav-link:hover { color: rgba(17,24,39,.75); }    /* 흰 배경(기술/제품/문의) */
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
@@ -56,16 +58,16 @@
         </div>
     
        <div id="nav-menu" class="hidden md:flex gap-8 items-center text-white font-bold transition-colors duration-300">
-          <a href="#about" class="hover:text-white/80 transition">
+          <a href="#about" class="nav-link transition">
             <span lang="ko">회사소개</span><span lang="en">About</span>
           </a>
-          <a href="#technology" class="hover:text-white/80 transition">
+          <a href="#technology" class="nav-link transition">
             <span lang="ko">기술소개</span><span lang="en">Technology</span>
           </a>
-          <a href="#product" class="hover:text-white/80 transition">
+          <a href="#product" class="nav-link transition">
             <span lang="ko">제품소개</span><span lang="en">Products</span>
           </a>
-          <a href="#contact" class="hover:text-white/80 transition">
+          <a href="#contact" class="nav-link transition">
             <span lang="ko">문의사항</span><span lang="en">Contact</span>
           </a>
     
@@ -371,6 +373,7 @@
     
 </body>
 </html>
+
 
 
 
