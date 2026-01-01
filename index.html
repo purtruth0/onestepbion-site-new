@@ -324,15 +324,23 @@
 
     if (btn && panel) {
       btn.addEventListener("click", () => {
-        const isOpen = !panel.classList.contains("hidden");
-        if (isOpen) {
-          panel.classList.add("hidden");
-          btn.setAttribute("aria-expanded", "false");
-        } else {
-          panel.classList.remove("hidden");
-          btn.setAttribute("aria-expanded", "true");
-        }
-      });
+          const isOpen = !panel.classList.contains("hidden");
+          if (isOpen) {
+            panel.classList.add("hidden");
+            btn.setAttribute("aria-expanded", "false");
+            hideTip(); // (있으면) 닫을 때 안내 숨김
+          } else {
+            panel.classList.remove("hidden");
+            btn.setAttribute("aria-expanded", "true");
+        
+            // ✅ 여기서! 패널이 열린 직후 안내
+            armed = false;
+            scale = 1;
+            apply();
+            showTip("지도 이미지를 클릭한 후,\n마우스 휠을 위로 올리면 확대됩니다.", 3000);
+          }
+        });
+
     }
 
   // ✅ 오시는길 UX + 클릭 후 휠 업 확대(zoom-in)
@@ -498,6 +506,7 @@ if (mapImg) {
     
 </body>
 </html>
+
 
 
 
