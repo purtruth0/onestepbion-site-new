@@ -303,183 +303,172 @@
 
 <script>
   async function loadFooter() {
-    const res = await fetch("/partials/footer.html", { cache: "no-cache" });
-    const html = await res.text();
-    document.getElementById("site-footer").innerHTML = html;
+    const holder = document.getElementById("site-footer");
+    if (!holder) return;
 
-    // ✅ footer가 DOM에 들어온 다음에 초기화
-    initFooterDirections();
+    try {
+      const res = await fetch("/partials/footer.html", { cache: "no-cache" });
+      if (!res.ok) throw new Error("footer fetch failed: " + res.status);
+      const html = await res.text();
+      holder.innerHTML = html;
+
+      // ✅ footer가 DOM에 들어온 다음에만 초기화
+      initFooterDirections();
+    } catch (e) {
+      console.error(e);
+      // 에러 나도 화면이 완전히 비지 않게(디버깅용)
+      holder.innerHTML = `
+        <footer class="bg-[#2B2B31] text-white">
+          <div class="max-w-7xl mx-auto px-6 py-10 text-sm text-white/70">
+            Footer load failed. Check /partials/footer.html path.
+          </div>
+        </footer>
+      `;
+    }
   }
 
-function initFooterDirections() {
-  // ✅ 1) 네이버 지도 링크
-  const HQ_ADDRESS_KO = "광주광역시 북구 첨단과기로 123(오룡동) 창업진흥센터 A동(S8) 216-2호";
-  const naverLink = "https://map.naver.com/p/search/" + encodeURIComponent(HQ_ADDRESS_KO);
+  function initFooterDirections() {
+    // -------------------------
+    // 1) 네이버 지도 링크 세팅
+    // -------------------------
+    const HQ_ADDRESS_KO =
+      "광주광역시 북구 첨단과기로 123(오룡동) 창업진흥센터 A동(S8) 216-2호";
+    const naverLink = "https://map.naver.com/p/search/" + encodeURIComponent(HQ_ADDRESS_KO);
 
-  const linkEl = document.getElementById("naver-map-link");
-  if (linkEl) linkEl.href = naverLink;
+    const linkEl = document.getElementById("naver-map-link");
+    if (linkEl) linkEl.href = naverLink;
 
-  // ✅ 2) 오시는길 토글 요소
-  const btn = document.getElementById("btn-directions");
-  const panel = document.getElementById("directions-panel");
+    // -------------------------
+    // 2) 오시는길 패널 토글
+    // -------------------------
+    const btn = document.getElementById("btn-directions");
+    const panel = document.getElementById("directions-panel");
 
-  // ✅ 3) 지도 이미지 (footer.html 안에 id="map-img" 필요)
-  const mapImg = document.getElementById("map-img");
+    // 중복 바인딩 방지
+    if (btn && !btn.dataset.bound) {
+      btn.dataset.bound = "1";
+      btn.addEventListener("click", () => {
+        if (!panel) return;
 
-  // ------------------------------
-  // 툴팁(마우스 옆 메시지) 준비
-  // ------------------------------
-  let tip = document.getElementById("cursor-tip");
-  if (!tip) {
-    tip = document.createElement("div");
-    tip.id = "cursor-tip";
-    tip.style.position = "fixed";
-    tip.style.left = "0px";
-    tip.style.top = "0px";
-    tip.style.transform = "translate(12px, 12px)";
-    tip.style.padding = "8px 10px";
-    tip.style.borderRadius = "10px";
-    tip.style.fontSize = "12px";
-    tip.style.lineHeight = "1.3";
-    tip.style.whiteSpace = "pre-line"; // \n 줄바꿈 표시
-    tip.style.background = "rgba(0,0,0,0.65)";
-    tip.style.color = "white";
-    tip.style.pointerEvents = "none";
-    tip.style.zIndex = "9999";
-    tip.style.opacity = "0";
-    tip.style.transition = "opacity 150ms ease";
-    document.body.appendChild(tip);
-  }
+        const isOpen = !panel.classList.contains("hidden");
+        if (isOpen) {
+          panel.classList.add("hidden");
+          btn.setAttribute("aria-expanded", "false");
+          hideTip();
+        } else {
+          panel.classList.remove("hidden");
+          btn.setAttribute("aria-expanded", "true");
 
-  let tipVisible = false;
-  let tipTimer = null;
+          // ✅ 패널이 "열린 뒤" 안내 메시지
+          armed = false;
+          scale = 1;
+          applyZoomUI();
+          showTip("지도 이미지를 클릭한 후,\n마우스 휠을 위로 올리면 확대됩니다.", 3000);
+        }
+      });
+    }
 
-  function showTip(text, ms = 3000) {
-    tip.textContent = text;
-    tip.style.opacity = "1";
-    tipVisible = true;
+    // -------------------------
+    // 3) 툴팁(마우스 옆 안내)
+    // -------------------------
+    let tip = document.getElementById("cursor-tip");
+    if (!tip) {
+      tip = document.createElement("div");
+      tip.id = "cursor-tip";
+      tip.style.position = "fixed";
+      tip.style.left = "0px";
+      tip.style.top = "0px";
+      tip.style.transform = "translate(12px, 12px)";
+      tip.style.padding = "8px 10px";
+      tip.style.borderRadius = "10px";
+      tip.style.fontSize = "12px";
+      tip.style.lineHeight = "1.3";
+      tip.style.whiteSpace = "pre-line";
+      tip.style.background = "rgba(0,0,0,0.65)";
+      tip.style.color = "white";
+      tip.style.pointerEvents = "none";
+      tip.style.zIndex = "9999";
+      tip.style.opacity = "0";
+      tip.style.transition = "opacity 150ms ease";
+      document.body.appendChild(tip);
+    }
 
-    if (tipTimer) clearTimeout(tipTimer);
-    tipTimer = setTimeout(() => hideTip(), ms);
-  }
+    let tipTimer = null;
+    function showTip(text, ms = 2500) {
+      tip.textContent = text;
+      tip.style.opacity = "1";
+      if (tipTimer) clearTimeout(tipTimer);
+      tipTimer = setTimeout(() => hideTip(), ms);
+    }
+    function hideTip() {
+      tip.style.opacity = "0";
+    }
 
-  function hideTip() {
-    tip.style.opacity = "0";
-    tipVisible = false;
-  }
+    // 마우스 따라다니게 (한 번만)
+    if (!window.__cursorTipMoveBound) {
+      window.__cursorTipMoveBound = true;
+      window.addEventListener("mousemove", (e) => {
+        const t = document.getElementById("cursor-tip");
+        if (!t || t.style.opacity === "0") return;
+        t.style.left = e.clientX + "px";
+        t.style.top = e.clientY + "px";
+      });
+    }
 
-  // 마우스 위치 따라다니게
-  if (!window.__cursorTipMoveBound) {
-    window.__cursorTipMoveBound = true;
-    window.addEventListener("mousemove", (e) => {
-      const t = document.getElementById("cursor-tip");
-      if (!t || t.style.opacity === "0") return;
-      t.style.left = e.clientX + "px";
-      t.style.top = e.clientY + "px";
-    });
-  }
+    // -------------------------
+    // 4) 지도 이미지: 클릭 후 휠 업 확대
+    // -------------------------
+    const mapImg = document.getElementById("map-img");
+    // footer.html 안 이미지에 id="map-img"가 있어야 함
 
-  // ------------------------------
-  // 지도 줌 상태 관리
-  // ------------------------------
-  let armed = false; // 이미지 클릭 후 true (그때부터 휠로 확대/축소)
-  let scale = 1;
-  const MIN = 1;
-  const MAX = 3;
-  const STEP = 0.12;
+    // 줌 상태(이 함수 내부에서만 사용)
+    let armed = false; // 이미지 클릭 후 true
+    let scale = 1;
+    const MIN = 1;
+    const MAX = 3;
+    const STEP = 0.12;
 
-  function applyZoomUI() {
-    if (!mapImg) return;
-    mapImg.style.transform = `scale(${scale})`;
-    mapImg.style.transformOrigin = "center center";
-    mapImg.style.transition = "transform 80ms linear";
+    function applyZoomUI() {
+      if (!mapImg) return;
+      mapImg.style.transform = `scale(${scale})`;
+      mapImg.style.transformOrigin = "center center";
+      mapImg.style.transition = "transform 80ms linear";
+      mapImg.style.cursor = armed ? "zoom-in" : "default";
+    }
 
-    // ✅ 요구사항: 패널 열렸을 때는 기본 포인터,
-    // 이미지 클릭(armed=true) 후에 돋보기(+) 표시
-    mapImg.style.cursor = armed ? "zoom-in" : "default";
+    if (mapImg && mapImg.dataset.zoomBound !== "1") {
+      mapImg.dataset.zoomBound = "1";
+      mapImg.draggable = false;
 
-    // 클릭해서 줌 모드가 켜졌을 때만 테두리(선택 사항)
-    mapImg.style.outline = armed ? "2px solid rgba(255,255,255,.5)" : "none";
-    mapImg.style.outlineOffset = "4px";
-  }
-
-  // ------------------------------
-  // ✅ 오시는길 토글: 열릴 때 안내 메시지
-  // ------------------------------
-  if (btn && panel && !btn.dataset.bound) {
-    btn.dataset.bound = "1";
-
-    btn.addEventListener("click", () => {
-      const isOpen = !panel.classList.contains("hidden");
-
-      if (isOpen) {
-        panel.classList.add("hidden");
-        btn.setAttribute("aria-expanded", "false");
-        hideTip();
-      } else {
-        panel.classList.remove("hidden");
-        btn.setAttribute("aria-expanded", "true");
-
-        // ✅ 패널이 열린 “그때부터” 안내 메시지
-        armed = false;
-        scale = 1;
+      // 클릭 → 줌 준비(돋보기 +)
+      mapImg.addEventListener("click", () => {
+        armed = true;
         applyZoomUI();
-        showTip("지도 이미지를 클릭한 후,\n마우스 휠을 위로 올리면 확대됩니다.");
-      }
-    });
-  }
+        showTip("휠 위로: 확대\n휠 아래로: 축소", 2000);
+      });
 
-  // ------------------------------
-  // ✅ 지도 이미지 확대/축소 이벤트
-  // ------------------------------
-  if (mapImg && mapImg.dataset.zoomBound !== "1") {
-    mapImg.dataset.zoomBound = "1";
-    mapImg.draggable = false;
+      // 휠: 클릭 후(armed=true)일 때만 확대/축소
+      mapImg.addEventListener(
+        "wheel",
+        (e) => {
+          if (!armed) return; // 클릭 전에는 페이지 스크롤 정상
+          e.preventDefault();
 
-    // 이미지 클릭하면 줌 모드 ON(armed=true) + 커서 돋보기(+)로
-    mapImg.addEventListener("click", () => {
-      armed = true;
+          // ✅ 일반적인 방향: 휠 UP(음수)=확대, DOWN(양수)=축소
+          scale = e.deltaY < 0 ? scale + STEP : scale - STEP;
+          scale = Math.max(MIN, Math.min(MAX, scale));
+          applyZoomUI();
+        },
+        { passive: false }
+      );
+
       applyZoomUI();
-      showTip("휠 위로: 확대\n휠 아래로: 축소", 2000);
-    });
-
-    // 휠: armed일 때만 가로채서 확대/축소
-    mapImg.addEventListener("wheel", (e) => {
-      if (!armed) return;   // ✅ 클릭 전에는 페이지/섹션 스크롤 정상 동작
-      e.preventDefault();   // ✅ 클릭 후에만 확대/축소가 동작
-
-      // 일반적인 UX: 휠 UP(음수)=확대, 휠 DOWN(양수)=축소
-      scale = (e.deltaY < 0) ? (scale + STEP) : (scale - STEP);
-      scale = Math.max(MIN, Math.min(MAX, scale));
-      applyZoomUI();
-    }, { passive: false });
-  }
-
-  // ESC로 줌 해제 (선택)
-  if (!window.__mapZoomEscBound) {
-    window.__mapZoomEscBound = true;
-    document.addEventListener("keydown", (e) => {
-      if (e.key !== "Escape") return;
-      const img = document.getElementById("map-img");
-      if (!img) return;
-
-      // armed/scale은 이 함수 스코프 변수지만,
-      // ESC는 “일단 원래 상태로” 복귀시키는 용도로만 처리
-      img.style.transform = "scale(1)";
-      img.style.outline = "none";
-      img.style.cursor = "default";
-      hideTip();
-    });
-  }
-
-  applyZoomUI();
-}
-
-
+    }
   }
 
   document.addEventListener("DOMContentLoaded", loadFooter);
 </script>
+
 
 
 <script>
@@ -521,6 +510,7 @@ function initFooterDirections() {
     
 </body>
 </html>
+
 
 
 
