@@ -24,17 +24,25 @@
 <body class="min-h-screen flex flex-col bg-gray-50 text-gray-900">
 
 
-  <!-- 상단 nav(간단 버전) -->
+  <!-- ✅ nav는 index.html과 동일하게 (KR/EN 버튼 포함) 복사 -->
   <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      <a href="index.html" class="flex items-center">
-        <img src="assets/images/logo.png" alt="OneStep Bion 로고" class="h-16 w-auto">
-      </a>
+      <div class="flex items-center">
+        <a href="index.html">
+          <img src="assets/images/logo.png" alt="OneStep Bion 로고" class="h-16 w-auto">
+        </a>
+      </div>
 
-      <div class="flex items-center gap-2 text-sm">
-        <button onclick="changeLang('ko')" id="btn-ko" class="text-osb-navy font-bold">KR</button>
-        <span class="text-gray-300">|</span>
-        <button onclick="changeLang('en')" id="btn-en" class="text-gray-400 hover:text-osb-navy">EN</button>
+      <div class="hidden md:flex gap-8 font-medium items-center">
+        <a href="index.html#technology" class="hover:text-osb-green transition">
+          <span lang="ko">제품소개</span><span lang="en">Technology</span>
+        </a>
+
+        <div class="flex items-center gap-2 ml-4 border-l pl-4 border-gray-200 text-sm">
+          <button onclick="changeLang('ko')" id="btn-ko" class="text-osb-navy font-bold">KR</button>
+          <span class="text-gray-300">|</span>
+          <button onclick="changeLang('en')" id="btn-en" class="text-gray-400 hover:text-osb-navy">EN</button>
+        </div>
       </div>
     </div>
   </nav>
@@ -163,6 +171,7 @@
   
 </body>
 </html>
+
 
 
 
