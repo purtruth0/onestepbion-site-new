@@ -303,78 +303,26 @@
 
 <script>
   async function loadFooter() {
-    // ✅ 어떤 페이지에서도 동일하게 쓰기 좋게 절대경로 추천
     const res = await fetch("/partials/footer.html", { cache: "no-cache" });
     const html = await res.text();
     document.getElementById("site-footer").innerHTML = html;
 
-    // ✅ footer 안 버튼/링크 이벤트 초기화 (아래 함수)
+    // ✅ footer가 DOM에 들어온 다음에 초기화
     initFooterDirections();
-             // ✅ map.png 클릭 후 휠로 확대/축소
-        const mapImg = document.getElementById("map-img");
-        if (mapImg) {
-          let zoomOn = false;
-          let scale = 1;
-          const MIN = 1;
-          const MAX = 3;
-    
-          const apply = () => {
-            mapImg.style.transform = `scale(${scale})`;
-            mapImg.style.transformOrigin = "center center";
-            mapImg.style.transition = "transform 80ms linear";
-            mapImg.classList.toggle("cursor-zoom-out", zoomOn);
-            mapImg.classList.toggle("cursor-zoom-in", !zoomOn);
-            mapImg.style.outline = zoomOn ? "2px solid rgba(255,255,255,.5)" : "none";
-            mapImg.style.outlineOffset = "4px";
-          };
-    
-          mapImg.addEventListener("click", () => {
-            zoomOn = !zoomOn;
-            if (!zoomOn) scale = 1; // 줌 모드 끄면 원래 크기로
-            apply();
-          });
-    
-          mapImg.addEventListener("wheel", (e) => {
-            if (!zoomOn) return;        // ✅ 줌 모드일 때만 동작
-            e.preventDefault();         // ✅ 이때만 페이지 스크롤 막기
-    
-            const delta = e.deltaY;
-            // 휠 아래(+)면 확대, 위(-)면 축소 느낌으로
-            const step = 0.12;
-            scale = delta > 0 ? scale + step : scale - step;
-            scale = Math.max(MIN, Math.min(MAX, scale));
-            apply();
-          }, { passive: false });
-    
-          // ESC로 줌 모드 해제(선택)
-          document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape" && zoomOn) {
-              zoomOn = false;
-              scale = 1;
-              apply();
-            }
-          });
-    
-          apply();
-        }
   }
 
   function initFooterDirections() {
-    // ✅ 아래 내용은 "기존 index.html에 있던 네이버 지도/토글 스크립트"를
-    //    그대로 가져오되, 이 함수 안으로 넣으면 됩니다.
-    //    (현재 index.html의 이 부분을 통째로 옮기세요) :contentReference[oaicite:2]{index=2}
-
+    // ✅ 네이버 지도 링크
     const HQ_ADDRESS_KO = "광주광역시 북구 첨단과기로 123(오룡동) 창업진흥센터 A동(S8) 216-2호";
     const naverLink = "https://map.naver.com/p/search/" + encodeURIComponent(HQ_ADDRESS_KO);
     const linkEl = document.getElementById("naver-map-link");
     if (linkEl) linkEl.href = naverLink;
 
+    // ✅ 오시는길 패널 토글
     const btn = document.getElementById("btn-directions");
     const panel = document.getElementById("directions-panel");
 
-    // ⚠️ 여기 아래로도 원래 코드 그대로 이어서 넣으시면 됩니다.
-    // (지도 initNaverMapOnce, btn 클릭 토글 등)
-       if (btn && panel) {
+    if (btn && panel) {
       btn.addEventListener("click", () => {
         const isOpen = !panel.classList.contains("hidden");
         if (isOpen) {
@@ -387,10 +335,57 @@
       });
     }
 
+    // ✅ map.png 클릭 후 휠로 확대/축소 (여기! 반드시 initFooterDirections 안)
+    const mapImg = document.getElementById("map-img");
+    if (mapImg) {
+      let zoomOn = false;
+      let scale = 1;
+      const MIN = 1;
+      const MAX = 3;
+
+      const apply = () => {
+        mapImg.style.transform = `scale(${scale})`;
+        mapImg.style.transformOrigin = "center center";
+        mapImg.style.transition = "transform 80ms linear";
+        mapImg.style.cursor = zoomOn ? "zoom-out" : "zoom-in";
+        mapImg.style.outline = zoomOn ? "2px solid rgba(255,255,255,.5)" : "none";
+        mapImg.style.outlineOffset = "4px";
+      };
+
+      mapImg.addEventListener("click", () => {
+        zoomOn = !zoomOn;
+        if (!zoomOn) scale = 1;
+        apply();
+      });
+
+      mapImg.addEventListener("wheel", (e) => {
+        if (!zoomOn) return;
+        e.preventDefault();
+
+        const step = 0.12;
+        scale = e.deltaY > 0 ? scale + step : scale - step;
+        scale = Math.max(MIN, Math.min(MAX, scale));
+        apply();
+      }, { passive: false });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && zoomOn) {
+          zoomOn = false;
+          scale = 1;
+          apply();
+        }
+      });
+
+      apply();
+    } else {
+      // (디버깅용) map-img가 없으면 footer.html에 id가 없다는 뜻
+      // console.log("map-img not found. Check footer.html img id='map-img'");
+    }
   }
 
   document.addEventListener("DOMContentLoaded", loadFooter);
 </script>
+
 
 <script>
   const nav = document.getElementById('site-nav');
@@ -431,6 +426,7 @@
     
 </body>
 </html>
+
 
 
 
