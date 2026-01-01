@@ -310,6 +310,53 @@
 
     // ✅ footer 안 버튼/링크 이벤트 초기화 (아래 함수)
     initFooterDirections();
+             // ✅ map.png 클릭 후 휠로 확대/축소
+        const mapImg = document.getElementById("map-img");
+        if (mapImg) {
+          let zoomOn = false;
+          let scale = 1;
+          const MIN = 1;
+          const MAX = 3;
+    
+          const apply = () => {
+            mapImg.style.transform = `scale(${scale})`;
+            mapImg.style.transformOrigin = "center center";
+            mapImg.style.transition = "transform 80ms linear";
+            mapImg.classList.toggle("cursor-zoom-out", zoomOn);
+            mapImg.classList.toggle("cursor-zoom-in", !zoomOn);
+            mapImg.style.outline = zoomOn ? "2px solid rgba(255,255,255,.5)" : "none";
+            mapImg.style.outlineOffset = "4px";
+          };
+    
+          mapImg.addEventListener("click", () => {
+            zoomOn = !zoomOn;
+            if (!zoomOn) scale = 1; // 줌 모드 끄면 원래 크기로
+            apply();
+          });
+    
+          mapImg.addEventListener("wheel", (e) => {
+            if (!zoomOn) return;        // ✅ 줌 모드일 때만 동작
+            e.preventDefault();         // ✅ 이때만 페이지 스크롤 막기
+    
+            const delta = e.deltaY;
+            // 휠 아래(+)면 확대, 위(-)면 축소 느낌으로
+            const step = 0.12;
+            scale = delta > 0 ? scale + step : scale - step;
+            scale = Math.max(MIN, Math.min(MAX, scale));
+            apply();
+          }, { passive: false });
+    
+          // ESC로 줌 모드 해제(선택)
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && zoomOn) {
+              zoomOn = false;
+              scale = 1;
+              apply();
+            }
+          });
+    
+          apply();
+        }
   }
 
   function initFooterDirections() {
@@ -384,6 +431,7 @@
     
 </body>
 </html>
+
 
 
 
