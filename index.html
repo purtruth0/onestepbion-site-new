@@ -252,11 +252,79 @@
                 <span lang="ko">축산 농가, 수정란 생산처 및 난임 센터 파트너십을 환영합니다.</span>
                 <span lang="en">We welcome partnerships with livestock farms, embryo producers, and fertility clinics.</span>
             </p>
-            <div class="bg-osb-navy text-white px-10 py-6 rounded-md inline-block shadow-xl mb-12">
-                <p class="text-sm opacity-80 mb-2 font-bold uppercase tracking-widest">Inquiry</p>
-            </div>
+
+            <button id="btn-inquiry" type="button"
+              class="bg-osb-navy text-white px-10 py-6 rounded-md inline-block shadow-xl mb-12">
+              <p class="text-sm opacity-80 mb-2 font-bold uppercase tracking-widest">Inquiry</p>
+              <p class="text-lg font-semibold">Partnership Inquiry OneStep Bion</p>
+            </button>
+            
         </div>
        <div id="site-footer" class="mt-auto"></div>
+
+        <!-- ✅ Inquiry Modal -->
+        <div id="inquiry-modal" class="hidden fixed inset-0 z-[9999]">
+          <!-- 배경 -->
+          <div id="inquiry-backdrop" class="absolute inset-0 bg-black/50"></div>
+        
+          <!-- 카드 -->
+          <div class="relative mx-auto mt-24 w-[92%] max-w-xl bg-white rounded-2xl p-6 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-bold">
+                <span lang="ko">문의하기</span>
+                <span lang="en">Inquiry</span>
+              </h3>
+              <button id="btn-close-inquiry" type="button"
+                class="text-gray-500 hover:text-gray-900 text-2xl leading-none">&times;</button>
+            </div>
+        
+            <!-- ✅ 상태 메시지(1줄) -->
+            <p id="inquiry-status" class="hidden text-sm mb-3"></p>
+        
+            <!-- ✅ 폼 -->
+            <form id="inquiry-form" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium mb-1">
+                  <span lang="ko">이름</span><span lang="en">Name</span>
+                </label>
+                <input name="name" required class="w-full border rounded-lg px-3 py-2" />
+              </div>
+        
+              <div>
+                <label class="block text-sm font-medium mb-1">Email</label>
+                <input name="email" type="email" required class="w-full border rounded-lg px-3 py-2" />
+              </div>
+        
+              <div>
+                <label class="block text-sm font-medium mb-1">
+                  <span lang="ko">제목</span><span lang="en">Subject</span>
+                </label>
+                <input name="subject" class="w-full border rounded-lg px-3 py-2"
+                       placeholder="(선택)"/>
+              </div>
+        
+              <div>
+                <label class="block text-sm font-medium mb-1">
+                  <span lang="ko">내용</span><span lang="en">Message</span>
+                </label>
+                <textarea name="message" rows="6" required class="w-full border rounded-lg px-3 py-2"></textarea>
+              </div>
+        
+              <div class="flex gap-3 justify-end pt-2">
+                <button type="button" id="btn-cancel-inquiry"
+                  class="px-4 py-2 rounded-md border">
+                  <span lang="ko">취소</span><span lang="en">Cancel</span>
+                </button>
+        
+                <button type="submit" id="btn-submit-inquiry"
+                  class="px-5 py-2 rounded-md bg-osb-navy text-white font-semibold">
+                  <span lang="ko">보내기</span><span lang="en">Send</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+    
     </section>
  
 <script>
@@ -371,11 +439,95 @@
   document.addEventListener('DOMContentLoaded', onScroll);
 </script>
 
+<script>
+  // ✅ 1) Formspree 엔드포인트만 본인 것으로 교체
+  const FORM_ENDPOINT = "https://formspree.io/f/xaqnngyy"; // ← 여기 바꾸세요
+
+  const openBtn = document.getElementById("btn-inquiry");
+  const modal = document.getElementById("inquiry-modal");
+  const backdrop = document.getElementById("inquiry-backdrop");
+  const closeBtn = document.getElementById("btn-close-inquiry");
+  const cancelBtn = document.getElementById("btn-cancel-inquiry");
+  const form = document.getElementById("inquiry-form");
+  const statusEl = document.getElementById("inquiry-status");
+  const submitBtn = document.getElementById("btn-submit-inquiry");
+
+  function openModal() {
+    if (!modal) return;
+    modal.classList.remove("hidden");
+    setStatus(""); // 초기화
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.add("hidden");
+  }
+
+  function setStatus(msg, ok) {
+    if (!statusEl) return;
+    if (!msg) {
+      statusEl.classList.add("hidden");
+      statusEl.textContent = "";
+      return;
+    }
+    statusEl.classList.remove("hidden");
+    statusEl.className = "text-sm mb-3 " + (ok ? "text-green-700" : "text-red-700");
+    statusEl.textContent = msg;
+  }
+
+  openBtn?.addEventListener("click", openModal);
+  closeBtn?.addEventListener("click", closeModal);
+  cancelBtn?.addEventListener("click", closeModal);
+  backdrop?.addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  // ✅ Formspree로 비동기 전송(페이지 이동 없이)
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    setStatus("");
+
+    if (!FORM_ENDPOINT || FORM_ENDPOINT.includes("abcdwxyz")) {
+      setStatus("Form endpoint가 설정되지 않았습니다. FORM_ENDPOINT를 교체하세요.", false);
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add("opacity-70");
+
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Accept": "application/json" },
+        body: formData
+      });
+
+      if (res.ok) {
+        setStatus("문의가 전송되었습니다. 감사합니다.", true);
+        form.reset();
+        // 1.2초 후 자동 닫기(원치 않으면 제거)
+        setTimeout(closeModal, 1200);
+      } else {
+        setStatus("전송에 실패했습니다. 잠시 후 다시 시도해주세요.", false);
+      }
+    } catch (err) {
+      setStatus("네트워크 오류로 전송하지 못했습니다.", false);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("opacity-70");
+    }
+  });
+</script>
 
 
     
 </body>
 </html>
+
 
 
 
