@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OneStep Bion | AI 배아 선별 솔루션</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=YOUR_NAVER_MAP_CLIENT_ID"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
         body { font-family: 'Noto+Sans+KR', sans-serif; }
-        .bg-osb-navy { background-color: #00427A; }
-        .text-osb-green { color: #008B72; }
+        .bg-osb-navy { background-color: #00427A; } /* 로고 네이비 */
+        .text-osb-green { color: #008B72; } /* 로고 그린 */
         .gradient-osb { background: linear-gradient(135deg, #00427A 0%, #008B72 100%); }
 
+        /* ✅ 변경: JS로 display를 건드리지 않고, html lang 값으로 자동 토글 */
         html[lang="ko"] [lang="en"] { display: none !important; }
         html[lang="en"] [lang="ko"] { display: none !important; }
 
@@ -42,29 +44,22 @@
 
         /* footer(사이트푸터 div)는 스냅 포인트에서 제외 */
         #site-footer { scroll-snap-align: none; }
-
-        /* ✅ 모바일에서는 스크롤 스냅 해제 (잘림/주소창 높이 변화 대응) */
-        @media (max-width: 767px) {
-          html { scroll-snap-type: none; }
-          section { scroll-snap-align: none; scroll-snap-stop: normal; }
-        }
-
           /* ✅ 메뉴 hover를 테마(밝은/어두운)별로 다르게 */
       #nav-menu.nav-dark .nav-link:hover { color: rgba(255,255,255,.8); }   /* 히어로(어두운 배경) */
       #nav-menu.nav-light .nav-link:hover { color: rgba(17,24,39,.75); }    /* 흰 배경(기술/제품/문의) */
-    
     </style>
 </head>
-
 <body class="bg-gray-50 text-gray-900">
 
-    <nav id="site-nav" class="fixed w-full z-50 bg-transparent">
+    <nav id="site-nav" class="fixed w-full z-50 bg-transparent transition-colors duration-300">
       <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <div class="flex items-center">
+         <a href="index.html">
           <img src="./assets/images/logo.png" alt="OneStep Bion 로고" class="h-16 w-auto">
+         </a>
         </div>
-
-        <div id="nav-menu" class="hidden md:flex gap-8 font-bold items-center text-white nav-dark">
+    
+       <div id="nav-menu" class="hidden md:flex gap-8 items-center text-white font-bold transition-colors duration-300">
           <a href="#about" class="nav-link transition">
             <span lang="ko">회사소개</span><span lang="en">About</span>
           </a>
@@ -77,10 +72,10 @@
           <a href="#contact" class="nav-link transition">
             <span lang="ko">문의사항</span><span lang="en">Contact</span>
           </a>
-
-          <div class="flex items-center gap-2 ml-4 border-l pl-4 border-white/30 text-sm">
+    
+          <div class="flex items-center gap-2 ml-4 border-l border-current/30 pl-4 text-sm">
           <button onclick="changeLang('ko')" id="btn-ko" class="font-bold opacity-100">KR</button>
-          <span class="opacity-70">|</span>
+          <span class="text-current/40">|</span>
           <button onclick="changeLang('en')" id="btn-en" class="font-bold opacity-70 hover:opacity-100">EN</button>
           </div>
 
@@ -89,148 +84,168 @@
     </nav>
 
     
-    <section id="hero" class="relative min-h-[100svh] md:h-screen w-full pt-20 box-border">
-      <img src="./assets/images/main1.png" alt="Hero" class="absolute inset-0 w-full h-full object-cover" />
+    <section id="hero" class="relative h-screen w-full pt-20 box-border">
+
+      <img src="./assets/images/main.png" alt="Hero" class="absolute inset-0 w-full h-full object-cover" />
       
       <!-- 어두운 오버레이(글자 보이게 하고 싶으면) -->
       <div class="absolute inset-0 bg-black/30"></div>
     
       <!-- 위에 올릴 텍스트/버튼이 있으면 여기에 -->
-      <div class="relative z-10 h-full flex items-start justify-start">
-        <div class="max-w-7xl w-full px-6 text-white text-left pt-24 pl-6 md:pl-36 md:pt-32">
-
-          <!-- ✅ 1) 서브타이틀을 위로 이동 + 2) 한 줄 고정 + 글자 크기 반응형 -->
-          <p class="text-white/90 font-medium tracking-wide whitespace-normal md:whitespace-nowrap"
-             style="font-size: clamp(0.9rem, 1.6vw, 1.125rem);">
-            One Step Closer to a Happy Tomorrow
-          </p>
-
-          <!-- 메인 타이틀 -->
+   <div class="relative z-10 h-full flex items-start justify-start">
+    <div class="max-w-7xl w-full px-6 text-white text-left pl-6 md:pl-36"
+     style="padding-top: clamp(2.5rem, 10vh, 8rem);">
+    
+        <!-- ✅ 1) 서브타이틀을 위로 이동 + 2) 한 줄 고정 + 글자 크기 반응형 -->
+        <p class="text-white/90 font-medium tracking-wide whitespace-nowrap"
+           style="font-size: clamp(0.9rem, 2.1vmin, 1.75rem);">
+          One Step Closer to a Happy Tomorrow
+        </p>
+    
+        <!-- 메인 타이틀 -->
           <div lang="ko">
             <h1 class="font-bold leading-tight"
-                style="font-size: clamp(1.6rem, 4vw, 3.75rem);">
+                style="font-size: clamp(1.6rem, 5.6vmin, 5.4rem);">
               AI와 타임랩스로 완성하는<br>
               프리미엄 배아 선별
             </h1>
           </div>
           <div lang="en">
-            <h1 class="font-bold leading-tight"
-                style="font-size: clamp(1.6rem, 4vw, 3.75rem);">
-              Premium Embryo Selection<br>
-              via AI & Time-lapse
-            </h1>
+        <h1 class="font-bold leading-tight"
+            style="font-size: clamp(1.6rem, 5.6vmin, 5.4rem);">
+          Premium Embryo Selection<br>
+          via AI & Time-lapse
+        </h1>
           </div>
         </div>
       </div>
     </section>
 
-   <section id="technology" class="min-h-[100svh] md:h-screen pt-24 pb-10 bg-white overflow-y-auto box-border">
+   <section id="technology" class="h-screen pt-24 pb-10 bg-white overflow-y-auto box-border">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold mb-4 text-osb-navy">
+                <h2 class="text-3xl font-bold mb-4">
                     <span lang="ko">핵심 기술</span>
                     <span lang="en">Core Technology</span>
                 </h2>
-                <p class="text-xl text-gray-600">
-                    <span lang="ko">AI 기반 배아 선별 솔루션을 구성하는 핵심 요소</span>
-                    <span lang="en">Key components of our AI-based embryo selection solution</span>
+                <p class="text-gray-500">
+                    <span lang="ko">객관적이고 과학적인 데이터 기반 선별 솔루션 'Embrium'</span>
+                    <span lang="en">Objective, science-based, data-driven selection solution “Embrium”</span>
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                <a href="tech-optics.html" class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 group">
-                    <div class="w-16 h-16 bg-osb-navy rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition duration-300">
-                        <i class="fas fa-microscope text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 text-osb-navy">
-                        <span lang="ko">차별화된 광학 기술</span>
-                        <span lang="en">Advanced Optical Technology</span>
-                    </h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        <span lang="ko">단일 주사로 다양한 깊이의 3D 정보를 고속 취득, 배아의 미세 구조를 정밀 관찰</span>
-                        <span lang="en">High-speed acquisition of 3D information at various depths with a single scan for precise observation of embryo microstructures</span>
-                    </p>
-                </a>
-
-                <a href="tech-cell-stage-net.html" class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 group">
-                    <div class="w-16 h-16 bg-osb-navy rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition duration-300">
-                        <i class="fas fa-brain text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 text-osb-navy">
-                        <span lang="ko">Cell Stage Net (AI)</span>
-                        <span lang="en">Cell Stage Net (AI)</span>
-                    </h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        <span lang="ko">배아 발달단계를 세밀하게 분류하는 딥러닝 모델로, 수정란 발달 궤적을 예측</span>
-                        <span lang="en">Deep learning model that finely classifies embryo development stages and predicts embryo development trajectories</span>
-                    </p>
-                </a>
-
-                <a href="tech-quant-data.html" class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 group">
-                    <div class="w-16 h-16 bg-osb-navy rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition duration-300">
-                        <i class="fas fa-chart-line text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 text-osb-navy">
-                        <span lang="ko">정량화된 데이터</span>
-                        <span lang="en">Quantified Data</span>
-                    </h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        <span lang="ko">배아 발달의 정량적 지표를 제공해, 평가자의 편차를 줄이고 일관된 선별을 지원</span>
-                        <span lang="en">Quantifies development timing to reduce evaluator bias and support consistent embryo selection</span>
-                    </p>
-                </a>
+            <div class="grid md:grid-cols-3 gap-12">
+            <!-- 기존: <div class="p-8 ..."> ... </div> -->
+            <!-- 변경: <a href="..." class="block ..."> ... </a> -->
+            
+            <a href="tech-optics.html"
+               class="block p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
+              <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
+                <i class="fas fa-microscope"></i>
+              </div>
+              <h3 class="text-xl font-bold mb-4">
+                <span lang="ko">광학 기술</span>
+                <span lang="en">Optical Technology</span>
+              </h3>
+              <p class="text-gray-600 leading-relaxed">
+                <span lang="ko">배아 스트레스와 오염 위험을 최소화하는 인큐베이터 내 실시간 모니터링</span>
+                <span lang="en">In-situ monitoring minimizing embryo stress and contamination risk</span>
+              </p>
+            </a>
+            
+            <a href="tech-cell-stage-net.html"
+               class="block p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
+              <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
+                <i class="fas fa-brain"></i>
+              </div>
+              <h3 class="text-xl font-bold mb-4">
+                <span lang="ko">인공지능 기술 </span>
+                <span lang="en">AI Technology </span>
+              </h3>
+              <p class="text-gray-600 leading-relaxed">
+                <span lang="ko">YOLO 기반의 커스텀 모델을 통해 95.8%의 높은 배아 발달 단계 분류 정확도 달성</span>
+                <span lang="en">Achieved 95.8% embryo-stage classification accuracy with a YOLO-based custom model</span>
+              </p>
+            </a>
+            
+            <a href="tech-quant-data.html"
+               class="block p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
+              <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <h3 class="text-xl font-bold mb-4">
+                <span lang="ko">정량화된 데이터</span>
+                <span lang="en">Quantified Data</span>
+              </h3>
+              <p class="text-gray-600 leading-relaxed">
+                <span lang="ko">배아 발달 타이밍 정량화로 선별사 개인차를 극복하고 일관된 고품질 선별 지원</span>
+                <span lang="en">Quantifies development timing to reduce evaluator bias and support consistent, high-quality selection</span>
+              </p>
+            </a>
+              
             </div>
         </div>
     </section>
 
-    <section id="product" class="min-h-[100svh] md:h-screen pt-24 pb-10 bg-gray-50 border-t border-gray-100 overflow-y-auto box-border">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl font-bold mb-4 text-osb-navy">
-            <span lang="ko">제품소개</span>
-            <span lang="en">Products</span>
-          </h2>
-          <p class="text-xl text-gray-600">
-            <span lang="ko">OneStep Bion의 대표 제품 2종을 소개합니다.</span>
-            <span lang="en">Introducing two flagship products from OneStep Bion.</span>
-          </p>
+  <section id="product" class="h-screen pt-24 pb-10 bg-gray-50 border-t border-gray-100 overflow-y-auto box-border">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold mb-4 text-osb-navy">
+        <span lang="ko">제품소개</span>
+        <span lang="en">Products</span>
+      </h2>
+      <p class="text-gray-500">
+        <span lang="ko">원스텝바이온의 제품을 소개합니다.</span>
+        <span lang="en">Introducing OneStep Bion’s products.</span>
+      </p>
+    </div>
+
+    <!-- 2개만 보여주기 -->
+    <div class="grid md:grid-cols-2 gap-12">
+      <!-- 제품 1 -->
+      <a href="product-1.html"
+         class="block bg-white p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
+        <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
+          <i class="fas fa-cube"></i>
         </div>
+        <h3 class="text-xl font-bold mb-3">
+          <span lang="ko">Embrium-HW001</span>
+          <span lang="en">Embrium-HW001</span>
+        </h3>
+        <p class="text-gray-600 leading-relaxed">
+          <span lang="ko"> 한우용 타임랩스 배아모니터링 기기 </span>
+          <span lang="en"> Time-lapse embryo monitoring system for Hanwoo </span>
+        </p>
+        <p class="mt-5 text-sm font-bold text-osb-green">
+          <span lang="ko">자세히 보기 →</span><span lang="en">View details →</span>
+        </p>
+      </a>
 
-        <div class="grid md:grid-cols-2 gap-10">
-          <a href="product-1.html" class="bg-white p-10 rounded-3xl border border-gray-100 shadow-lg hover:shadow-xl transition">
-            <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
-              <i class="fas fa-cube"></i>
-            </div>
-            <h3 class="text-2xl font-bold mb-3 text-osb-navy">
-              <span lang="ko">제품 1 이름</span>
-              <span lang="en">Product 1 Name</span>
-            </h3>
-            <p class="text-gray-600 leading-relaxed">
-              <span lang="ko">제품 1에 대한 간단한 설명을 넣으세요.</span>
-              <span lang="en">Brief description of Product 1.</span>
-            </p>
-          </a>
-
-          <a href="product-2.html" class="bg-white p-10 rounded-3xl border border-gray-100 shadow-lg hover:shadow-xl transition">
-            <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
-              <i class="fas fa-cube"></i>
-            </div>
-            <h3 class="text-2xl font-bold mb-3 text-osb-navy">
-              <span lang="ko">제품 2 이름</span>
-              <span lang="en">Product 2 Name</span>
-            </h3>
-            <p class="text-gray-600 leading-relaxed">
-              <span lang="ko">제품 2에 대한 간단한 설명을 넣으세요.</span>
-              <span lang="en">Brief description of Product 2.</span>
-            </p>
-          </a>
+      <!-- 제품 2 -->
+      <a href="product-2.html"
+         class="block bg-white p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
+        <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
+          <i class="fas fa-cube"></i>
         </div>
-      </div>
-    </section>
+        <h3 class="text-xl font-bold mb-3">
+          <span lang="ko"> Embrium-Human </span>
+          <span lang="en"> Embrium-Human </span>
+        </h3>
+        <p class="text-gray-600 leading-relaxed">
+          <span lang="ko"> 난임 센터용 타임랩스 배아모니터링 기기 </span>
+          <span lang="en"> Time-lapse embryo monitoring system for fertility clinics </span>
+        </p>
+        <p class="mt-5 text-sm font-bold text-osb-green">
+          <span lang="ko">자세히 보기 →</span><span lang="en">View details →</span>
+        </p>
+      </a>
+    </div>
+  </div>
+</section>
 
-    <section id="contact"
-  class="min-h-[100svh] md:h-screen pt-24 pb-0 bg-white border-t border-gray-100 box-border flex flex-col overflow-y-auto">
-        <div class="max-w-4xl mx-auto px-6 text-center">
+<section id="contact"
+  class="h-screen pt-24 pb-0 bg-white border-t border-gray-100 box-border flex flex-col overflow-y-auto">
+        <div class="max-w-4xl mx-auto px-6 text-center flex-1">
             <h2 class="text-3xl font-bold mb-8 text-osb-navy">
                 <span lang="ko">문의사항</span>
                 <span lang="en">Contact</span>
@@ -240,205 +255,284 @@
                 <span lang="en">We welcome partnerships with livestock farms, embryo producers, and fertility clinics.</span>
             </p>
 
-            <button id="open-inquiry"
-              class="bg-osb-navy text-white px-10 py-4 rounded-md inline-flex items-center gap-3 shadow-xl">
-              <span class="text-sm opacity-80 font-bold uppercase tracking-widest">Inquiry</span>
-              <span class="font-bold">
-                <span lang="ko">Partnership Inquiry</span>
-                <span lang="en">Partnership Inquiry</span>
-              </span>
+            <button id="btn-inquiry" type="button"
+              class="bg-osb-navy text-white px-10 py-6 rounded-md inline-block shadow-xl mb-12">         
+              <p class="text-lg font-semibold">INQUIRY</p>
             </button>
-
-            <div class="flex-1"></div>
+            
         </div>
+       <div id="site-footer" class="mt-auto"></div>
 
-        <div id="site-footer"></div>
+        <!-- ✅ Inquiry Modal -->
+        <div id="inquiry-modal" class="hidden fixed inset-0 z-[9999]">
+          <!-- 배경 -->
+          <div id="inquiry-backdrop" class="absolute inset-0 bg-black/50"></div>
+        
+          <!-- 카드 -->
+          <div class="relative mx-auto mt-24 w-[92%] max-w-xl bg-white rounded-2xl p-6 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-bold">
+                <span lang="ko">문의하기</span>
+                <span lang="en">Inquiry</span>
+              </h3>
+              <button id="btn-close-inquiry" type="button"
+                class="text-gray-500 hover:text-gray-900 text-2xl leading-none">&times;</button>
+            </div>
+        
+            <!-- ✅ 상태 메시지(1줄) -->
+            <p id="inquiry-status" class="hidden text-sm mb-3"></p>
+        
+            <!-- ✅ 폼 -->
+            <form id="inquiry-form" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium mb-1">
+                  <span lang="ko">이름</span><span lang="en">Name</span>
+                </label>
+                <input name="name" required class="w-full border rounded-lg px-3 py-2" />
+              </div>
+        
+              <div>
+                <label class="block text-sm font-medium mb-1">Email</label>
+                <input name="email" type="email" required class="w-full border rounded-lg px-3 py-2" />
+              </div>
+        
+              <div>
+                <label class="block text-sm font-medium mb-1">
+                  <span lang="ko">제목</span><span lang="en">Subject</span>
+                </label>
+                <input name="subject" class="w-full border rounded-lg px-3 py-2"
+                       placeholder="(선택)"/>
+              </div>
+        
+              <div>
+                <label class="block text-sm font-medium mb-1">
+                  <span lang="ko">내용</span><span lang="en">Message</span>
+                </label>
+                <textarea name="message" rows="6" required class="w-full border rounded-lg px-3 py-2"></textarea>
+              </div>
+        
+              <div class="flex gap-3 justify-end pt-2">
+                <button type="button" id="btn-cancel-inquiry"
+                  class="px-4 py-2 rounded-md border">
+                  <span lang="ko">취소</span><span lang="en">Cancel</span>
+                </button>
+        
+                <button type="submit" id="btn-submit-inquiry"
+                  class="px-5 py-2 rounded-md bg-osb-navy text-white font-semibold">
+                  <span lang="ko">보내기</span><span lang="en">Send</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+    
     </section>
-
-    <!-- 문의 모달 -->
-    <div id="inquiry-modal" class="fixed inset-0 z-[999] hidden">
-      <div class="absolute inset-0 bg-black/50"></div>
-      <div class="relative max-w-xl mx-auto mt-24 bg-white rounded-2xl shadow-2xl overflow-hidden">
-        <div class="flex items-center justify-between px-6 py-4 border-b">
-          <h3 class="font-bold text-lg">
-            <span lang="ko">문의하기</span>
-            <span lang="en">Inquiry</span>
-          </h3>
-          <button id="close-inquiry" class="text-gray-400 hover:text-gray-700 text-2xl leading-none">&times;</button>
-        </div>
-
-        <div class="px-6 py-4 text-sm text-gray-600">
-          <span lang="ko">작성하신 내용은 관리자 이메일로 전송됩니다.</span>
-          <span lang="en">Your message will be sent to the administrator email.</span>
-        </div>
-
-        <form id="inquiry-form" class="px-6 pb-6 space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              <span lang="ko">이름</span><span lang="en">Name</span>
-            </label>
-            <input id="inq-name" type="text" required class="w-full border rounded-lg px-4 py-2" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              <span lang="ko">이메일</span><span lang="en">Email</span>
-            </label>
-            <input id="inq-email" type="email" required class="w-full border rounded-lg px-4 py-2" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              <span lang="ko">메시지</span><span lang="en">Message</span>
-            </label>
-            <textarea id="inq-message" rows="5" required class="w-full border rounded-lg px-4 py-2"></textarea>
-          </div>
-
-          <div class="flex items-center justify-end gap-3 pt-2">
-            <button type="button" id="cancel-inquiry" class="px-5 py-2 rounded-md border">Cancel</button>
-            <button type="submit" class="px-5 py-2 rounded-md bg-osb-navy text-white font-bold">Send</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- 언어 전환 로직 -->
-    <script>
-      const PAGE_TITLES = {
+ 
+<script>
+    /* ✅ 변경된 언어전환 로직:
+       - display를 직접 조작하지 않음 (CSS가 html[lang] 기반으로 자동 토글)
+       - 버튼 스타일 + title 변경 + localStorage 저장
+    */
+    const PAGE_TITLES = {
         ko: 'OneStep Bion | AI 배아 선별 솔루션',
         en: 'OneStep Bion | AI Embryo Selection Solution'
-      };
+    };
 
-      function setLangButtons(lang) {
-        const btnKo = document.getElementById('btn-ko');
-        const btnEn = document.getElementById('btn-en');
-        if (!btnKo || !btnEn) return;
-
-        if (lang === 'ko') {
-          btnKo.className = 'font-bold opacity-100';
-          btnEn.className = 'font-bold opacity-70 hover:opacity-100';
-        } else {
-          btnEn.className = 'font-bold opacity-100';
-          btnKo.className = 'font-bold opacity-70 hover:opacity-100';
-        }
+    function setLangButtons(lang) {
+      const btnKo = document.getElementById('btn-ko');
+      const btnEn = document.getElementById('btn-en');
+      if (!btnKo || !btnEn) return;
+    
+      if (lang === 'ko') {
+        btnKo.className = 'font-bold opacity-100';
+        btnEn.className = 'font-bold opacity-70 hover:opacity-100';
+      } else {
+        btnEn.className = 'font-bold opacity-100';
+        btnKo.className = 'font-bold opacity-70 hover:opacity-100';
       }
+    }
 
-      function changeLang(lang) {
+
+    function changeLang(lang) {
         const next = (lang === 'en') ? 'en' : 'ko';
         document.documentElement.lang = next;
         document.title = PAGE_TITLES[next] || document.title;
 
         setLangButtons(next);
         try { localStorage.setItem('lang', next); } catch (e) {}
-      }
+    }
 
-      document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
         let saved = null;
         try { saved = localStorage.getItem('lang'); } catch (e) {}
         const initial = (saved === 'en' || saved === 'ko') ? saved : (document.documentElement.lang || 'ko');
 
+        // 초기 상태 한 번 적용
         document.documentElement.lang = initial;
         document.title = PAGE_TITLES[initial] || document.title;
         setLangButtons(initial);
+    });
+</script>
+
+<script>
+  function loadScriptOnce(src) {
+    return new Promise((resolve, reject) => {
+      if (document.querySelector(`script[data-src="${src}"]`)) return resolve();
+      const s = document.createElement("script");
+      s.src = src;
+      s.defer = true;
+      s.dataset.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  async function loadFooter() {
+    const holder = document.getElementById("site-footer");
+    if (!holder) return;
+
+    const res = await fetch("/partials/footer.html", { cache: "no-cache" });
+    holder.innerHTML = await res.text();
+
+    // ✅ footer 기능은 footer.js에서 공통 처리
+    if (!window.FooterDirections) {
+      await loadScriptOnce("/partials/footer.js");
+    }
+    window.FooterDirections.init(holder);
+  }
+
+  document.addEventListener("DOMContentLoaded", loadFooter);
+</script>
+
+<script>
+  const nav = document.getElementById('site-nav');
+  const menu = document.getElementById('nav-menu');
+  const hero = document.getElementById('hero');
+
+ function setNavTheme(isLightBg) {
+  if (!nav || !menu) return;
+
+  if (isLightBg) {
+    nav.classList.remove('bg-transparent');
+    nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
+
+    menu.classList.remove('text-white', 'nav-dark');
+    menu.classList.add('text-gray-900', 'nav-light');   // ✅ 추가
+  } else {
+    nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
+    nav.classList.add('bg-transparent');
+
+    menu.classList.remove('text-gray-900', 'nav-light');
+    menu.classList.add('text-white', 'nav-dark');       // ✅ 추가
+  }
+}
+
+
+  function onScroll() {
+    const y = window.scrollY || document.documentElement.scrollTop;
+    const navH = 80;
+    const heroH = hero ? hero.offsetHeight : 0;
+    setNavTheme(y >= (heroH - navH));
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  document.addEventListener('DOMContentLoaded', onScroll);
+</script>
+
+<script>
+  // ✅ 1) Formspree 엔드포인트만 본인 것으로 교체
+  const FORM_ENDPOINT = "https://formspree.io/f/xaqnngyy"; // ← 여기 바꾸세요
+
+  const openBtn = document.getElementById("btn-inquiry");
+  const modal = document.getElementById("inquiry-modal");
+  const backdrop = document.getElementById("inquiry-backdrop");
+  const closeBtn = document.getElementById("btn-close-inquiry");
+  const cancelBtn = document.getElementById("btn-cancel-inquiry");
+  const form = document.getElementById("inquiry-form");
+  const statusEl = document.getElementById("inquiry-status");
+  const submitBtn = document.getElementById("btn-submit-inquiry");
+
+  function openModal() {
+    if (!modal) return;
+    modal.classList.remove("hidden");
+    setStatus(""); // 초기화
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.add("hidden");
+  }
+
+  function setStatus(msg, ok) {
+    if (!statusEl) return;
+    if (!msg) {
+      statusEl.classList.add("hidden");
+      statusEl.textContent = "";
+      return;
+    }
+    statusEl.classList.remove("hidden");
+    statusEl.className = "text-sm mb-3 " + (ok ? "text-green-700" : "text-red-700");
+    statusEl.textContent = msg;
+  }
+
+  openBtn?.addEventListener("click", openModal);
+  closeBtn?.addEventListener("click", closeModal);
+  cancelBtn?.addEventListener("click", closeModal);
+  backdrop?.addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  // ✅ Formspree로 비동기 전송(페이지 이동 없이)
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    setStatus("");
+
+    if (!FORM_ENDPOINT || FORM_ENDPOINT.includes("abcdwxyz")) {
+      setStatus("Form endpoint가 설정되지 않았습니다. FORM_ENDPOINT를 교체하세요.", false);
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add("opacity-70");
+
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Accept": "application/json" },
+        body: formData
       });
-    </script>
 
-    <!-- footer 로드 + footer 기능 -->
-    <script>
-      function loadScriptOnce(src) {
-        return new Promise((resolve, reject) => {
-          if (document.querySelector(`script[data-src="${src}"]`)) return resolve();
-          const s = document.createElement("script");
-          s.src = src;
-          s.defer = true;
-          s.dataset.src = src;
-          s.onload = resolve;
-          s.onerror = reject;
-          document.head.appendChild(s);
-        });
+      if (res.ok) {
+        setStatus("문의가 전송되었습니다. 감사합니다.", true);
+        form.reset();
+        // 1.2초 후 자동 닫기(원치 않으면 제거)
+        setTimeout(closeModal, 1200);
+      } else {
+        setStatus("전송에 실패했습니다. 잠시 후 다시 시도해주세요.", false);
       }
+    } catch (err) {
+      setStatus("네트워크 오류로 전송하지 못했습니다.", false);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("opacity-70");
+    }
+  });
+</script>
 
-      async function loadFooter() {
-        const holder = document.getElementById("site-footer");
-        if (!holder) return;
 
-        const res = await fetch("/partials/footer.html", { cache: "no-cache" });
-        holder.innerHTML = await res.text();
-
-        if (!window.FooterDirections) {
-          await loadScriptOnce("/partials/footer.js");
-        }
-        window.FooterDirections.init(holder);
-      }
-
-      document.addEventListener("DOMContentLoaded", loadFooter);
-    </script>
-
-    <!-- 메뉴 테마 자동 전환 -->
-    <script>
-      const nav = document.getElementById('site-nav');
-      const menu = document.getElementById('nav-menu');
-      const hero = document.getElementById('hero');
-
-      function setNavTheme(isLightBg) {
-        if (!nav || !menu) return;
-
-        if (isLightBg) {
-          nav.classList.remove('bg-transparent');
-          nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
-
-          menu.classList.remove('text-white');
-          menu.classList.add('text-gray-900');
-
-          menu.classList.remove('nav-dark');
-          menu.classList.add('nav-light');
-        } else {
-          nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
-          nav.classList.add('bg-transparent');
-
-          menu.classList.remove('text-gray-900');
-          menu.classList.add('text-white');
-
-          menu.classList.remove('nav-light');
-          menu.classList.add('nav-dark');
-        }
-      }
-
-      function onScroll() {
-        const y = window.scrollY || document.documentElement.scrollTop;
-        const navH = 80;
-        const heroH = hero ? hero.offsetHeight : 0;
-        setNavTheme(y >= (heroH - navH));
-      }
-
-      window.addEventListener('scroll', onScroll, { passive: true });
-      document.addEventListener('DOMContentLoaded', onScroll);
-    </script>
-
-    <!-- 문의 모달 동작 -->
-    <script>
-      const modal = document.getElementById('inquiry-modal');
-      const openBtn = document.getElementById('open-inquiry');
-      const closeBtn = document.getElementById('close-inquiry');
-      const cancelBtn = document.getElementById('cancel-inquiry');
-
-      function openModal() {
-        if (!modal) return;
-        modal.classList.remove('hidden');
-      }
-      function closeModal() {
-        if (!modal) return;
-        modal.classList.add('hidden');
-      }
-
-      openBtn?.addEventListener('click', openModal);
-      closeBtn?.addEventListener('click', closeModal);
-      cancelBtn?.addEventListener('click', closeModal);
-
-      modal?.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-      });
-
-      // (기존 문의 전송 로직이 있다면 그대로 유지)
-    </script>
-
+    
 </body>
 </html>
+
+
+
+
+
+
+
+
