@@ -32,6 +32,14 @@
           scroll-snap-stop: always;
         }
         
+        /* ✅ 모바일에서는 앵커 이동(#hero 등)을 확실히 하기 위해 스크롤 스냅 끄기 */
+        @media (max-width: 767px) {
+          html { scroll-snap-type: none; }
+          section { scroll-snap-align: none; scroll-snap-stop: normal; }
+        }
+
+        
+        
         body {
           overflow-y: auto;                /* 기본 스크롤 유지 */
         }
@@ -603,6 +611,7 @@
     
 </body>
 </html>
+
 
 
 
