@@ -450,49 +450,50 @@
   const menuDesktop = document.getElementById('nav-menu');     // PC 메뉴
   const menuMobile  = document.getElementById('nav-mobile');   // 모바일 메뉴
   const toggleBtn   = document.getElementById('nav-toggle');   // 햄버거 버튼
-
   const hero = document.getElementById('hero');
 
- function setNavTheme(isLightBg) {
-  if (!nav) return; // 모바일/PC 중 하나가 없어도 nav만 있으면 동작하게
-  if (isLightBg) {
-    nav.classList.remove('bg-transparent');
-    nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');  
-    applyMenuTheme(menuDesktop, isLightBg);
-    applyMenuTheme(menuMobile,  isLightBg);
-    applyMenuTheme(toggleBtn,   isLightBg);
-
-  } else {
-    nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
-    nav.classList.add('bg-transparent');
-    applyMenuTheme(menuDesktop, isLightBg);
-    applyMenuTheme(menuMobile,  isLightBg);
-    applyMenuTheme(toggleBtn,   isLightBg);
-  }
+  // ✅ (중요) setNavTheme 밖에 두세요
   function applyMenuTheme(el, isLightBg) {
-  if (!el) return;
-  if (isLightBg) {
-    el.classList.remove('text-white', 'nav-dark');
-    el.classList.add('text-gray-900', 'nav-light');
-  } else {
-    el.classList.remove('text-gray-900', 'nav-light');
-    el.classList.add('text-white', 'nav-dark');
+    if (!el) return;
+    if (isLightBg) {
+      el.classList.remove('text-white', 'nav-dark');
+      el.classList.add('text-gray-900', 'nav-light');
+    } else {
+      el.classList.remove('text-gray-900', 'nav-light');
+      el.classList.add('text-white', 'nav-dark');
+    }
   }
-}
-   
-}
 
+  function setNavTheme(isLightBg) {
+    if (!nav) return;
+
+    if (isLightBg) {
+      nav.classList.remove('bg-transparent');
+      nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
+    } else {
+      nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
+      nav.classList.add('bg-transparent');
+    }
+
+    // ✅ if/else 밖에서 한 번만 적용
+    applyMenuTheme(menuDesktop, isLightBg);
+    applyMenuTheme(menuMobile,  isLightBg);
+    applyMenuTheme(toggleBtn,   isLightBg);
+  }
 
   function onScroll() {
     const y = window.scrollY || document.documentElement.scrollTop;
     const navH = 80;
     const heroH = hero ? hero.offsetHeight : 0;
+
+    // hero 영역을 지나면 밝은 배경(흰색) 테마로 전환
     setNavTheme(y >= (heroH - navH));
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
   document.addEventListener('DOMContentLoaded', onScroll);
 </script>
+
 
 <script>
   // ✅ 1) Formspree 엔드포인트만 본인 것으로 교체
@@ -602,6 +603,7 @@
     
 </body>
 </html>
+
 
 
 
