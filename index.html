@@ -447,25 +447,32 @@
 
 <script>
   const nav = document.getElementById('site-nav');
-  const menu = document.getElementById('nav-menu');
+  const menuDesktop = document.getElementById('nav-menu');     // PC 메뉴
+  const menuMobile  = document.getElementById('nav-mobile');   // 모바일 메뉴
+  const toggleBtn   = document.getElementById('nav-toggle');   // 햄버거 버튼
+
   const hero = document.getElementById('hero');
 
  function setNavTheme(isLightBg) {
-  if (!nav || !menu) return;
-
+  if (!nav) return; // 모바일/PC 중 하나가 없어도 nav만 있으면 동작하게
   if (isLightBg) {
     nav.classList.remove('bg-transparent');
-    nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
-
-    menu.classList.remove('text-white', 'nav-dark');
-    menu.classList.add('text-gray-900', 'nav-light');   // ✅ 추가
+    nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');  
   } else {
     nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
     nav.classList.add('bg-transparent');
-
-    menu.classList.remove('text-gray-900', 'nav-light');
-    menu.classList.add('text-white', 'nav-dark');       // ✅ 추가
   }
+  function applyMenuTheme(el, isLightBg) {
+  if (!el) return;
+  if (isLightBg) {
+    el.classList.remove('text-white', 'nav-dark');
+    el.classList.add('text-gray-900', 'nav-light');
+  } else {
+    el.classList.remove('text-gray-900', 'nav-light');
+    el.classList.add('text-white', 'nav-dark');
+  }
+}
+   
 }
 
 
@@ -588,6 +595,7 @@
     
 </body>
 </html>
+
 
 
 
