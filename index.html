@@ -458,9 +458,16 @@
   if (isLightBg) {
     nav.classList.remove('bg-transparent');
     nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');  
+    applyMenuTheme(menuDesktop, isLightBg);
+    applyMenuTheme(menuMobile,  isLightBg);
+    applyMenuTheme(toggleBtn,   isLightBg);
+
   } else {
     nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
     nav.classList.add('bg-transparent');
+    applyMenuTheme(menuDesktop, isLightBg);
+    applyMenuTheme(menuMobile,  isLightBg);
+    applyMenuTheme(toggleBtn,   isLightBg);
   }
   function applyMenuTheme(el, isLightBg) {
   if (!el) return;
@@ -595,6 +602,7 @@
     
 </body>
 </html>
+
 
 
 
