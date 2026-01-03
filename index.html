@@ -78,26 +78,39 @@
         </button>
 
           
-       <div id="nav-menu" class="hidden md:flex gap-8 items-center text-white font-bold transition-colors duration-300">
-          <a href="#about" class="nav-link transition">
-            <span lang="ko">회사소개</span><span lang="en">About</span>
-          </a>
-          <a href="#technology" class="nav-link transition">
-            <span lang="ko">기술소개</span><span lang="en">Technology</span>
-          </a>
-          <a href="#product" class="nav-link transition">
-            <span lang="ko">제품소개</span><span lang="en">Products</span>
-          </a>
-          <a href="#contact" class="nav-link transition">
-            <span lang="ko">문의사항</span><span lang="en">Contact</span>
-          </a>
-    
-          <div class="flex items-center gap-2 ml-4 border-l border-current/30 pl-4 text-sm">
-          <button onclick="changeLang('ko')" id="btn-ko" class="font-bold opacity-100">KR</button>
-          <span class="text-current/40">|</span>
-          <button onclick="changeLang('en')" id="btn-en" class="font-bold opacity-70 hover:opacity-100">EN</button>
+      <!-- ✅ 오른쪽 영역: (모바일) 햄버거 + (PC) 메뉴 -->
+        <div class="flex items-center gap-4">
+          <!-- 모바일 햄버거 버튼 (md 이상에서는 숨김) -->
+          <button id="nav-toggle"
+                  class="md:hidden text-white text-2xl"
+                  aria-label="메뉴 열기"
+                  aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        
+          <!-- PC 메뉴 (md 이상에서만 보임) -->
+          <div id="nav-menu" class="hidden md:flex gap-8 items-center text-white font-bold transition-colors duration-300">
+            <a href="#hero" class="nav-link transition">
+              <span lang="ko">회사소개</span><span lang="en">About</span>
+            </a>
+            <a href="#technology" class="nav-link transition">
+              <span lang="ko">기술소개</span><span lang="en">Technology</span>
+            </a>
+            <a href="#product" class="nav-link transition">
+              <span lang="ko">제품소개</span><span lang="en">Products</span>
+            </a>
+            <a href="#contact" class="nav-link transition">
+              <span lang="ko">문의사항</span><span lang="en">Contact</span>
+            </a>
+        
+            <div class="flex items-center gap-2 ml-4 border-l border-current/30 pl-4 text-sm">
+              <button onclick="changeLang('ko')" id="btn-ko" class="font-bold opacity-100">KR</button>
+              <span class="text-current/40">|</span>
+              <button onclick="changeLang('en')" id="btn-en" class="font-bold opacity-70 hover:opacity-100">EN</button>
+            </div>
           </div>
         </div>
+
           
         <!-- ✅ 모바일 메뉴 (md 이상에서는 숨김) -->
         <div id="nav-mobile"
@@ -125,10 +138,33 @@
             <span class="text-current/40">|</span>
             <button onclick="changeLang('en')" class="font-bold opacity-70 hover:opacity-100">EN</button>
           </div>
-        </div>
-
-          
+        </div>          
       </div>
+  <!-- ✅ 모바일 드롭다운 메뉴 (처음엔 hidden) -->
+    <div id="nav-mobile"
+         class="md:hidden hidden bg-white/90 backdrop-blur-md border-b border-gray-100">
+      <div class="max-w-7xl mx-auto px-6 py-3 font-bold text-gray-900 nav-light">
+        <a href="#hero" class="nav-link block py-3 border-b border-gray-200/60">
+          <span lang="ko">회사소개</span><span lang="en">About</span>
+        </a>
+        <a href="#technology" class="nav-link block py-3 border-b border-gray-200/60">
+          <span lang="ko">기술소개</span><span lang="en">Technology</span>
+        </a>
+        <a href="#product" class="nav-link block py-3 border-b border-gray-200/60">
+          <span lang="ko">제품소개</span><span lang="en">Products</span>
+        </a>
+        <a href="#contact" class="nav-link block py-3">
+          <span lang="ko">문의사항</span><span lang="en">Contact</span>
+        </a>
+    
+        <div class="flex items-center gap-2 mt-3 pt-3 border-t border-gray-200/60 text-sm">
+          <button onclick="changeLang('ko')" class="font-bold opacity-100">KR</button>
+          <span class="text-current/40">|</span>
+          <button onclick="changeLang('en')" class="font-bold opacity-70 hover:opacity-100">EN</button>
+        </div>
+      </div>
+    </div>
+      
     </nav>
 
     
@@ -455,12 +491,11 @@
 
 <script>
   const nav = document.getElementById('site-nav');
-  const menuDesktop = document.getElementById('nav-menu');     // PC 메뉴
-  const menuMobile  = document.getElementById('nav-mobile');   // 모바일 메뉴
-  const toggleBtn   = document.getElementById('nav-toggle');   // 햄버거 버튼
+  const menuDesktop = document.getElementById('nav-menu');
+  const menuMobile  = document.getElementById('nav-mobile');
+  const toggleBtn   = document.getElementById('nav-toggle');
   const hero = document.getElementById('hero');
 
-  // ✅ (중요) setNavTheme 밖에 두세요
   function applyMenuTheme(el, isLightBg) {
     if (!el) return;
     if (isLightBg) {
@@ -483,9 +518,7 @@
       nav.classList.add('bg-transparent');
     }
 
-    // ✅ if/else 밖에서 한 번만 적용
     applyMenuTheme(menuDesktop, isLightBg);
-    applyMenuTheme(menuMobile,  isLightBg);
     applyMenuTheme(toggleBtn,   isLightBg);
   }
 
@@ -493,14 +526,42 @@
     const y = window.scrollY || document.documentElement.scrollTop;
     const navH = 80;
     const heroH = hero ? hero.offsetHeight : 0;
-
-    // hero 영역을 지나면 밝은 배경(흰색) 테마로 전환
     setNavTheme(y >= (heroH - navH));
   }
 
+  function closeMobileMenu() {
+    if (!menuMobile || !toggleBtn) return;
+    menuMobile.classList.add('hidden');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleMobileMenu() {
+    if (!menuMobile || !toggleBtn) return;
+    const willOpen = menuMobile.classList.contains('hidden');
+    menuMobile.classList.toggle('hidden');
+    toggleBtn.setAttribute('aria-expanded', String(willOpen));
+  }
+
   window.addEventListener('scroll', onScroll, { passive: true });
-  document.addEventListener('DOMContentLoaded', onScroll);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    onScroll();
+
+    // ✅ 햄버거 클릭 → 모바일 메뉴 열고 닫기
+    toggleBtn?.addEventListener('click', toggleMobileMenu);
+
+    // ✅ 모바일 메뉴 항목 누르면 자동 닫기
+    menuMobile?.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', closeMobileMenu);
+    });
+
+    // ✅ 화면이 커지면(md 이상) 모바일 메뉴 닫기
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) closeMobileMenu();
+    });
+  });
 </script>
+
 
 
 <script>
@@ -611,6 +672,7 @@
     
 </body>
 </html>
+
 
 
 
