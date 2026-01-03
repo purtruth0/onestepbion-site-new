@@ -20,36 +20,44 @@
 
         html { scroll-behavior: smooth; } /* 메뉴 클릭 시 부드럽게 이동 */
 
-         /* ✅ “페이지처럼 착” 스크롤: Scroll Snap (확실 버전) */
+        /* ✅ “페이지처럼 착” 스크롤: Scroll Snap (PC/태블릿에서만 강하게) */
         html, body { height: 100%; }
-        
+
         html {
           scroll-snap-type: y mandatory;   /* ✅ 스냅은 html에 거는 게 더 안정적 */
-          scroll-padding-top: 0;        /* ✅ 고정 nav 높이 보정 */
+          scroll-padding-top: 0;          /* ✅ 고정 nav 높이 보정(섹션에 pt로 처리) */
         }
-        section {
-          scroll-snap-align: start;
-          scroll-snap-stop: always;
-        }
-        
-        body {
-          overflow-y: auto;                /* 기본 스크롤 유지 */
-        }
-        
-        /* 스냅 대상(4개 섹션) */
         section {
           scroll-snap-align: start;
           scroll-snap-stop: always;
         }
 
+        body { overflow-y: auto; }        /* 기본 스크롤 유지 */
+
         /* footer(사이트푸터 div)는 스냅 포인트에서 제외 */
         #site-footer { scroll-snap-align: none; }
-          /* ✅ 메뉴 hover를 테마(밝은/어두운)별로 다르게 */
-      #nav-menu.nav-dark .nav-link:hover { color: rgba(255,255,255,.8); }   /* 히어로(어두운 배경) */
-      #nav-menu.nav-light .nav-link:hover { color: rgba(17,24,39,.75); }    /* 흰 배경(기술/제품/문의) */
+
+        /* ✅ 메뉴 hover를 테마(밝은/어두운)별로 다르게 */
+        #nav-menu.nav-dark .nav-link:hover { color: rgba(255,255,255,.8); }   /* 히어로(어두운 배경) */
+        #nav-menu.nav-light .nav-link:hover { color: rgba(17,24,39,.75); }    /* 흰 배경(기술/제품/문의) */
+
+        /* ✅ 모바일(작은 화면)에서는:
+           - 섹션을 "고정 높이(h-screen)"로 묶지 않고 자연스럽게 늘어나도록
+           - 스냅을 끄고 일반 스크롤로 (주소창/높이 변동에도 잘림 방지)
+        */
+        @media (max-width: 767px) {
+          html { scroll-snap-type: none; }
+          section { scroll-snap-align: none; scroll-snap-stop: normal; }
+        }
+
+        /* ✅ 모바일 브라우저에서 100vh 잘림 방지(svh 지원 시) */
+        @supports (height: 100svh) {
+          .h-screen { height: 100svh !important; }
+          .min-h-screen { min-height: 100svh !important; }
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
 
     <nav id="site-nav" class="fixed w-full z-50 bg-transparent transition-colors duration-300">
       <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -58,7 +66,7 @@
           <img src="./assets/images/logo.png" alt="OneStep Bion 로고" class="h-16 w-auto">
          </a>
         </div>
-    
+
        <div id="nav-menu" class="hidden md:flex gap-8 items-center text-white font-bold transition-colors duration-300">
           <a href="#about" class="nav-link transition">
             <span lang="ko">회사소개</span><span lang="en">About</span>
@@ -72,7 +80,7 @@
           <a href="#contact" class="nav-link transition">
             <span lang="ko">문의사항</span><span lang="en">Contact</span>
           </a>
-    
+
           <div class="flex items-center gap-2 ml-4 border-l border-current/30 pl-4 text-sm">
           <button onclick="changeLang('ko')" id="btn-ko" class="font-bold opacity-100">KR</button>
           <span class="text-current/40">|</span>
@@ -83,36 +91,36 @@
       </div>
     </nav>
 
-    
-    <section id="hero" class="relative h-screen w-full pt-20 box-border">
 
-      <img src="./assets/images/main.png" alt="Hero" class="absolute inset-0 w-full h-full object-cover" />
-      
+    <!-- ✅ HERO: 모바일에서는 min-h-screen(늘어남), md 이상에서는 h-screen(한 화면) -->
+    <section id="hero" class="relative min-h-screen md:h-screen w-full pt-20 box-border">
+      <img src="./assets/images/main1.png" alt="Hero" class="absolute inset-0 w-full h-full object-cover" />
+
       <!-- 어두운 오버레이(글자 보이게 하고 싶으면) -->
       <div class="absolute inset-0 bg-black/30"></div>
-    
+
       <!-- 위에 올릴 텍스트/버튼이 있으면 여기에 -->
    <div class="relative z-10 h-full flex items-start justify-start">
-    <div class="max-w-7xl w-full px-6 text-white text-left pl-6 md:pl-36"
-     style="padding-top: clamp(2.5rem, 10vh, 8rem);">
-    
+    <!-- ✅ 모바일에서 왼쪽 여백(pl-36) 때문에 잘리는 문제 방지: pl-6 / md부터 pl-36 -->
+    <div class="max-w-7xl w-full px-6 text-white text-left pl-6 md:pl-36 pt-24 md:pt-32">
+
         <!-- ✅ 1) 서브타이틀을 위로 이동 + 2) 한 줄 고정 + 글자 크기 반응형 -->
         <p class="text-white/90 font-medium tracking-wide whitespace-nowrap"
-           style="font-size: clamp(0.9rem, 2.1vmin, 1.75rem);">
+           style="font-size: clamp(1.05rem, 1.9vw, 1.35rem);">
           One Step Closer to a Happy Tomorrow
         </p>
-    
+
         <!-- 메인 타이틀 -->
           <div lang="ko">
             <h1 class="font-bold leading-tight"
-                style="font-size: clamp(1.6rem, 5.6vmin, 5.4rem);">
+                style="font-size: clamp(2.0rem, 4.6vw, 4.25rem);">
               AI와 타임랩스로 완성하는<br>
               프리미엄 배아 선별
             </h1>
           </div>
           <div lang="en">
         <h1 class="font-bold leading-tight"
-            style="font-size: clamp(1.6rem, 5.6vmin, 5.4rem);">
+            style="font-size: clamp(2.0rem, 4.6vw, 4.25rem);">
           Premium Embryo Selection<br>
           via AI & Time-lapse
         </h1>
@@ -121,7 +129,8 @@
       </div>
     </section>
 
-   <section id="technology" class="h-screen pt-24 pb-10 bg-white overflow-y-auto box-border">
+   <!-- ✅ 섹션들: 모바일(min-h-screen + overflow-visible), md 이상(h-screen + overflow-y-auto) -->
+   <section id="technology" class="min-h-screen md:h-screen pt-24 pb-10 bg-white overflow-visible md:overflow-y-auto box-border">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
                 <h2 class="text-3xl font-bold mb-4">
@@ -135,9 +144,6 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-12">
-            <!-- 기존: <div class="p-8 ..."> ... </div> -->
-            <!-- 변경: <a href="..." class="block ..."> ... </a> -->
-            
             <a href="tech-optics.html"
                class="block p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
               <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
@@ -152,7 +158,7 @@
                 <span lang="en">In-situ monitoring minimizing embryo stress and contamination risk</span>
               </p>
             </a>
-            
+
             <a href="tech-cell-stage-net.html"
                class="block p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
               <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
@@ -167,7 +173,7 @@
                 <span lang="en">Achieved 95.8% embryo-stage classification accuracy with a YOLO-based custom model</span>
               </p>
             </a>
-            
+
             <a href="tech-quant-data.html"
                class="block p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition focus:outline-none focus:ring-2 focus:ring-osb-green">
               <div class="w-14 h-14 gradient-osb rounded-2xl flex items-center justify-center text-white mb-6 text-2xl">
@@ -182,12 +188,12 @@
                 <span lang="en">Quantifies development timing to reduce evaluator bias and support consistent, high-quality selection</span>
               </p>
             </a>
-              
+
             </div>
         </div>
     </section>
 
-  <section id="product" class="h-screen pt-24 pb-10 bg-gray-50 border-t border-gray-100 overflow-y-auto box-border">
+  <section id="product" class="min-h-screen md:h-screen pt-24 pb-10 bg-gray-50 border-t border-gray-100 overflow-visible md:overflow-y-auto box-border">
   <div class="max-w-7xl mx-auto px-6">
     <div class="text-center mb-16">
       <h2 class="text-3xl font-bold mb-4 text-osb-navy">
@@ -244,7 +250,7 @@
 </section>
 
 <section id="contact"
-  class="h-screen pt-24 pb-0 bg-white border-t border-gray-100 box-border flex flex-col overflow-y-auto">
+  class="min-h-screen md:h-screen pt-24 pb-0 bg-white border-t border-gray-100 box-border flex flex-col overflow-visible md:overflow-y-auto">
         <div class="max-w-4xl mx-auto px-6 text-center flex-1">
             <h2 class="text-3xl font-bold mb-8 text-osb-navy">
                 <span lang="ko">문의사항</span>
@@ -256,10 +262,10 @@
             </p>
 
             <button id="btn-inquiry" type="button"
-              class="bg-osb-navy text-white px-10 py-6 rounded-md inline-block shadow-xl mb-12">         
+              class="bg-osb-navy text-white px-10 py-6 rounded-md inline-block shadow-xl mb-12">
               <p class="text-lg font-semibold">INQUIRY</p>
             </button>
-            
+
         </div>
        <div id="site-footer" class="mt-auto"></div>
 
@@ -267,7 +273,7 @@
         <div id="inquiry-modal" class="hidden fixed inset-0 z-[9999]">
           <!-- 배경 -->
           <div id="inquiry-backdrop" class="absolute inset-0 bg-black/50"></div>
-        
+
           <!-- 카드 -->
           <div class="relative mx-auto mt-24 w-[92%] max-w-xl bg-white rounded-2xl p-6 shadow-xl">
             <div class="flex items-center justify-between mb-4">
@@ -278,10 +284,10 @@
               <button id="btn-close-inquiry" type="button"
                 class="text-gray-500 hover:text-gray-900 text-2xl leading-none">&times;</button>
             </div>
-        
+
             <!-- ✅ 상태 메시지(1줄) -->
             <p id="inquiry-status" class="hidden text-sm mb-3"></p>
-        
+
             <!-- ✅ 폼 -->
             <form id="inquiry-form" class="space-y-4">
               <div>
@@ -290,12 +296,12 @@
                 </label>
                 <input name="name" required class="w-full border rounded-lg px-3 py-2" />
               </div>
-        
+
               <div>
                 <label class="block text-sm font-medium mb-1">Email</label>
                 <input name="email" type="email" required class="w-full border rounded-lg px-3 py-2" />
               </div>
-        
+
               <div>
                 <label class="block text-sm font-medium mb-1">
                   <span lang="ko">제목</span><span lang="en">Subject</span>
@@ -303,20 +309,20 @@
                 <input name="subject" class="w-full border rounded-lg px-3 py-2"
                        placeholder="(선택)"/>
               </div>
-        
+
               <div>
                 <label class="block text-sm font-medium mb-1">
                   <span lang="ko">내용</span><span lang="en">Message</span>
                 </label>
                 <textarea name="message" rows="6" required class="w-full border rounded-lg px-3 py-2"></textarea>
               </div>
-        
+
               <div class="flex gap-3 justify-end pt-2">
                 <button type="button" id="btn-cancel-inquiry"
                   class="px-4 py-2 rounded-md border">
                   <span lang="ko">취소</span><span lang="en">Cancel</span>
                 </button>
-        
+
                 <button type="submit" id="btn-submit-inquiry"
                   class="px-5 py-2 rounded-md bg-osb-navy text-white font-semibold">
                   <span lang="ko">보내기</span><span lang="en">Send</span>
@@ -325,9 +331,9 @@
             </form>
           </div>
         </div>
-    
+
     </section>
- 
+
 <script>
     /* ✅ 변경된 언어전환 로직:
        - display를 직접 조작하지 않음 (CSS가 html[lang] 기반으로 자동 토글)
@@ -342,7 +348,7 @@
       const btnKo = document.getElementById('btn-ko');
       const btnEn = document.getElementById('btn-en');
       if (!btnKo || !btnEn) return;
-    
+
       if (lang === 'ko') {
         btnKo.className = 'font-bold opacity-100';
         btnEn.className = 'font-bold opacity-70 hover:opacity-100';
@@ -351,7 +357,6 @@
         btnKo.className = 'font-bold opacity-70 hover:opacity-100';
       }
     }
-
 
     function changeLang(lang) {
         const next = (lang === 'en') ? 'en' : 'ko';
@@ -427,7 +432,6 @@
     menu.classList.add('text-white', 'nav-dark');       // ✅ 추가
   }
 }
-
 
   function onScroll() {
     const y = window.scrollY || document.documentElement.scrollTop;
@@ -524,15 +528,5 @@
   });
 </script>
 
-
-    
 </body>
 </html>
-
-
-
-
-
-
-
-
