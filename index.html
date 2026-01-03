@@ -68,15 +68,6 @@
           <img src="./assets/images/logo.png" alt="OneStep Bion 로고" class="h-16 w-auto">
          </a>
         </div>
-
-        <!-- ✅ 모바일 햄버거 버튼 (md 이상에서는 숨김) -->
-        <button id="nav-toggle"
-          class="md:hidden text-white text-2xl"
-          aria-label="메뉴 열기"
-          aria-expanded="false">
-          <i class="fa-solid fa-bars"></i>
-        </button>
-
           
       <!-- ✅ 오른쪽 영역: (모바일) 햄버거 + (PC) 메뉴 -->
         <div class="flex items-center gap-4">
@@ -109,36 +100,7 @@
               <button onclick="changeLang('en')" id="btn-en" class="font-bold opacity-70 hover:opacity-100">EN</button>
             </div>
           </div>
-        </div>
-
-          
-        <!-- ✅ 모바일 메뉴 (md 이상에서는 숨김) -->
-        <div id="nav-mobile"
-          class="md:hidden hidden px-6 pb-4 pt-2 font-bold transition-colors duration-300">
-          
-          <a href="#hero" class="nav-link block py-3 border-b border-white/20">
-            <span lang="ko">회사소개</span><span lang="en">About</span>
-          </a>
-        
-          <a href="#technology" class="nav-link block py-3 border-b border-white/20">
-            <span lang="ko">기술소개</span><span lang="en">Technology</span>
-          </a>
-        
-          <a href="#product" class="nav-link block py-3 border-b border-white/20">
-            <span lang="ko">제품소개</span><span lang="en">Products</span>
-          </a>
-        
-          <a href="#contact" class="nav-link block py-3">
-            <span lang="ko">문의사항</span><span lang="en">Contact</span>
-          </a>
-        
-          <!-- 언어 버튼도 모바일 메뉴 안에 같이 넣기 -->
-          <div class="flex items-center gap-2 mt-4 border-t border-white/20 pt-4 text-sm">
-            <button onclick="changeLang('ko')" class="font-bold opacity-100">KR</button>
-            <span class="text-current/40">|</span>
-            <button onclick="changeLang('en')" class="font-bold opacity-70 hover:opacity-100">EN</button>
-          </div>
-        </div>          
+        </div>       
       </div>
   <!-- ✅ 모바일 드롭다운 메뉴 (처음엔 hidden) -->
     <div id="nav-mobile"
@@ -648,30 +610,10 @@
   });
 </script>
 
-<script>
-  const toggleBtn = document.getElementById('nav-toggle');
-  const mobileMenu = document.getElementById('nav-mobile');
-
-  // 메뉴 열고 닫기
-  toggleBtn?.addEventListener('click', () => {
-    const isHidden = mobileMenu.classList.toggle('hidden') === false; // 열렸으면 false
-    toggleBtn.setAttribute('aria-expanded', String(isHidden));
-  });
-
-  // 메뉴 항목 클릭하면 자동으로 닫기
-  mobileMenu?.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-  });
-
-  // 화면이 커져서(md 이상) PC메뉴로 바뀌면 모바일 메뉴는 닫아두기
-  window.addEventListener('resize', () => {
-    if (window.innerWidth >= 768) mobileMenu?.classList.add('hidden');
-  });
-</script>
-
     
 </body>
 </html>
+
 
 
 
