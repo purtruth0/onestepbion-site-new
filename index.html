@@ -31,6 +31,13 @@
           scroll-snap-align: start;
           scroll-snap-stop: always;
         }
+
+       /* ✅ 모바일에서는 스크롤 스냅 해제 (잘림/주소창 높이 변화 대응) */
+        @media (max-width: 767px) {
+          html { scroll-snap-type: none; }
+          section { scroll-snap-align: none; scroll-snap-stop: normal; }
+        } 
+
         
         body {
           overflow-y: auto;                /* 기본 스크롤 유지 */
@@ -528,6 +535,7 @@
     
 </body>
 </html>
+
 
 
 
