@@ -44,114 +44,75 @@
 
         /* footer(사이트푸터 div)는 스냅 포인트에서 제외 */
         #site-footer { scroll-snap-align: none; }
-        
+          /* ✅ 메뉴 hover를 테마(밝은/어두운)별로 다르게 */
+      #nav-menu.nav-dark .nav-link:hover { color: rgba(255,255,255,.8); }   /* 히어로(어두운 배경) */
+      #nav-menu.nav-light .nav-link:hover { color: rgba(17,24,39,.75); }    /* 흰 배경(기술/제품/문의) */
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
 
     <nav id="site-nav" class="fixed w-full z-50 bg-transparent transition-colors duration-300">
-  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-    <div class="flex items-center">
-      <a href="index.html">
-        <img src="./assets/images/logo.png" alt="OneStep Bion 로고" class="h-16 w-auto">
-      </a>
-    </div>
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div class="flex items-center">
+         <a href="index.html">
+          <img src="./assets/images/logo.png" alt="OneStep Bion 로고" class="h-16 w-auto">
+         </a>
+        </div>
+    
+       <div id="nav-menu" class="hidden md:flex gap-8 items-center text-white font-bold transition-colors duration-300">
+          <a href="#about" class="nav-link transition">
+            <span lang="ko">회사소개</span><span lang="en">About</span>
+          </a>
+          <a href="#technology" class="nav-link transition">
+            <span lang="ko">기술소개</span><span lang="en">Technology</span>
+          </a>
+          <a href="#product" class="nav-link transition">
+            <span lang="ko">제품소개</span><span lang="en">Products</span>
+          </a>
+          <a href="#contact" class="nav-link transition">
+            <span lang="ko">문의사항</span><span lang="en">Contact</span>
+          </a>
+    
+          <div class="flex items-center gap-2 ml-4 border-l border-current/30 pl-4 text-sm">
+          <button onclick="changeLang('ko')" id="btn-ko" class="font-bold opacity-100">KR</button>
+          <span class="text-current/40">|</span>
+          <button onclick="changeLang('en')" id="btn-en" class="font-bold opacity-70 hover:opacity-100">EN</button>
+          </div>
 
-    <!-- ✅ 데스크톱 메뉴(기존 그대로) -->
-    <div id="nav-menu" class="hidden md:flex gap-8 items-center text-white font-bold transition-colors duration-300">
-      <a href="#about" class="nav-link transition">
-        <span lang="ko">회사소개</span><span lang="en">About</span>
-      </a>
-      <a href="#technology" class="nav-link transition">
-        <span lang="ko">기술소개</span><span lang="en">Technology</span>
-      </a>
-      <a href="#product" class="nav-link transition">
-        <span lang="ko">제품소개</span><span lang="en">Products</span>
-      </a>
-      <a href="#contact" class="nav-link transition">
-        <span lang="ko">문의사항</span><span lang="en">Contact</span>
-      </a>
-
-      <div class="flex items-center gap-2 ml-4 border-l border-current/30 pl-4 text-sm">
-        <button onclick="changeLang('ko')" id="btn-ko" class="font-bold opacity-100">KR</button>
-        <span class="text-current/40">|</span>
-        <button onclick="changeLang('en')" id="btn-en" class="font-bold opacity-70 hover:opacity-100">EN</button>
+        </div>
       </div>
-    </div>
-
-    <!-- ✅ 모바일 햄버거 버튼 -->
-    <div class="md:hidden flex items-center">
-      <button id="btn-mobile-menu"
-              type="button"
-              class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white/60"
-              aria-controls="nav-mobile-panel"
-              aria-expanded="false">
-        <span class="sr-only">Open menu</span>
-        <!-- 아이콘 -->
-        <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- ✅ 모바일 드롭다운 메뉴 -->
-  <div id="nav-mobile-panel"
-       class="md:hidden hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-md border-b border-gray-100">
-    <div id="nav-mobile-menu" class="max-w-7xl mx-auto px-6 py-4 text-gray-900">
-      <a href="#about" class="block py-3 font-semibold nav-link hover:text-osb-green transition">
-        <span lang="ko">회사소개</span><span lang="en">About</span>
-      </a>
-      <a href="#technology" class="block py-3 font-semibold nav-link hover:text-osb-green transition">
-        <span lang="ko">기술소개</span><span lang="en">Technology</span>
-      </a>
-      <a href="#product" class="block py-3 font-semibold nav-link hover:text-osb-green transition">
-        <span lang="ko">제품소개</span><span lang="en">Products</span>
-      </a>
-      <a href="#contact" class="block py-3 font-semibold nav-link hover:text-osb-green transition">
-        <span lang="ko">문의사항</span><span lang="en">Contact</span>
-      </a>
-
-      <div class="mt-3 pt-3 border-t border-gray-200 flex items-center gap-2 text-sm">
-        <button onclick="changeLang('ko')" id="btn-ko-m" class="font-bold opacity-100">KR</button>
-        <span class="text-gray-300">|</span>
-        <button onclick="changeLang('en')" id="btn-en-m" class="font-bold opacity-70 hover:opacity-100">EN</button>
-      </div>
-    </div>
-  </div>
-</nav>
+    </nav>
 
     
     <section id="hero" class="relative h-screen w-full pt-20 box-border">
-      <img src="./assets/images/main1.png" alt="Hero" class="absolute inset-0 w-full h-full object-cover" />
+
+      <img src="./assets/images/main.png" alt="Hero" class="absolute inset-0 w-full h-full object-cover" />
       
       <!-- 어두운 오버레이(글자 보이게 하고 싶으면) -->
       <div class="absolute inset-0 bg-black/30"></div>
     
       <!-- 위에 올릴 텍스트/버튼이 있으면 여기에 -->
    <div class="relative z-10 h-full flex items-start justify-start">
-    <div class="max-w-7xl w-full px-6 text-white text-left pt-24 pl-36 md:pt-32">
+    <div class="max-w-7xl w-full px-6 text-white text-left pl-6 md:pl-36"
+     style="padding-top: clamp(2.5rem, 10vh, 8rem);">
     
         <!-- ✅ 1) 서브타이틀을 위로 이동 + 2) 한 줄 고정 + 글자 크기 반응형 -->
         <p class="text-white/90 font-medium tracking-wide whitespace-nowrap"
-           style="font-size: clamp(0.9rem, 1.6vw, 1.125rem);">
+           style="font-size: clamp(0.9rem, 2.1vmin, 1.75rem);">
           One Step Closer to a Happy Tomorrow
         </p>
     
         <!-- 메인 타이틀 -->
           <div lang="ko">
             <h1 class="font-bold leading-tight"
-                style="font-size: clamp(1.6rem, 4vw, 3.75rem);">
+                style="font-size: clamp(1.6rem, 5.6vmin, 5.4rem);">
               AI와 타임랩스로 완성하는<br>
               프리미엄 배아 선별
             </h1>
           </div>
           <div lang="en">
         <h1 class="font-bold leading-tight"
-            style="font-size: clamp(1.6rem, 4vw, 3.75rem);">
+            style="font-size: clamp(1.6rem, 5.6vmin, 5.4rem);">
           Premium Embryo Selection<br>
           via AI & Time-lapse
         </h1>
@@ -183,8 +144,8 @@
                 <i class="fas fa-microscope"></i>
               </div>
               <h3 class="text-xl font-bold mb-4">
-                <span lang="ko">차별화된 광학 기술</span>
-                <span lang="en">Advanced Optical Tech</span>
+                <span lang="ko">광학 기술</span>
+                <span lang="en">Optical Technology</span>
               </h3>
               <p class="text-gray-600 leading-relaxed">
                 <span lang="ko">배아 스트레스와 오염 위험을 최소화하는 인큐베이터 내 실시간 모니터링</span>
@@ -198,8 +159,8 @@
                 <i class="fas fa-brain"></i>
               </div>
               <h3 class="text-xl font-bold mb-4">
-                <span lang="ko">Cell Stage Net (AI)</span>
-                <span lang="en">Cell Stage Net (AI)</span>
+                <span lang="ko">인공지능 기술 </span>
+                <span lang="en">AI Technology </span>
               </h3>
               <p class="text-gray-600 leading-relaxed">
                 <span lang="ko">YOLO 기반의 커스텀 모델을 통해 95.8%의 높은 배아 발달 단계 분류 정확도 달성</span>
@@ -293,11 +254,78 @@
                 <span lang="ko">축산 농가, 수정란 생산처 및 난임 센터 파트너십을 환영합니다.</span>
                 <span lang="en">We welcome partnerships with livestock farms, embryo producers, and fertility clinics.</span>
             </p>
-            <div class="bg-osb-navy text-white px-10 py-6 rounded-md inline-block shadow-xl mb-12">
-                <p class="text-sm opacity-80 mb-2 font-bold uppercase tracking-widest">Inquiry</p>
-            </div>
+
+            <button id="btn-inquiry" type="button"
+              class="bg-osb-navy text-white px-10 py-6 rounded-md inline-block shadow-xl mb-12">         
+              <p class="text-lg font-semibold">INQUIRY</p>
+            </button>
+            
         </div>
        <div id="site-footer" class="mt-auto"></div>
+
+        <!-- ✅ Inquiry Modal -->
+        <div id="inquiry-modal" class="hidden fixed inset-0 z-[9999]">
+          <!-- 배경 -->
+          <div id="inquiry-backdrop" class="absolute inset-0 bg-black/50"></div>
+        
+          <!-- 카드 -->
+          <div class="relative mx-auto mt-24 w-[92%] max-w-xl bg-white rounded-2xl p-6 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-bold">
+                <span lang="ko">문의하기</span>
+                <span lang="en">Inquiry</span>
+              </h3>
+              <button id="btn-close-inquiry" type="button"
+                class="text-gray-500 hover:text-gray-900 text-2xl leading-none">&times;</button>
+            </div>
+        
+            <!-- ✅ 상태 메시지(1줄) -->
+            <p id="inquiry-status" class="hidden text-sm mb-3"></p>
+        
+            <!-- ✅ 폼 -->
+            <form id="inquiry-form" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium mb-1">
+                  <span lang="ko">이름</span><span lang="en">Name</span>
+                </label>
+                <input name="name" required class="w-full border rounded-lg px-3 py-2" />
+              </div>
+        
+              <div>
+                <label class="block text-sm font-medium mb-1">Email</label>
+                <input name="email" type="email" required class="w-full border rounded-lg px-3 py-2" />
+              </div>
+        
+              <div>
+                <label class="block text-sm font-medium mb-1">
+                  <span lang="ko">제목</span><span lang="en">Subject</span>
+                </label>
+                <input name="subject" class="w-full border rounded-lg px-3 py-2"
+                       placeholder="(선택)"/>
+              </div>
+        
+              <div>
+                <label class="block text-sm font-medium mb-1">
+                  <span lang="ko">내용</span><span lang="en">Message</span>
+                </label>
+                <textarea name="message" rows="6" required class="w-full border rounded-lg px-3 py-2"></textarea>
+              </div>
+        
+              <div class="flex gap-3 justify-end pt-2">
+                <button type="button" id="btn-cancel-inquiry"
+                  class="px-4 py-2 rounded-md border">
+                  <span lang="ko">취소</span><span lang="en">Cancel</span>
+                </button>
+        
+                <button type="submit" id="btn-submit-inquiry"
+                  class="px-5 py-2 rounded-md bg-osb-navy text-white font-semibold">
+                  <span lang="ko">보내기</span><span lang="en">Send</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+    
     </section>
  
 <script>
@@ -311,23 +339,14 @@
     };
 
     function setLangButtons(lang) {
-  const pairs = [
-    { ko: document.getElementById('btn-ko'),   en: document.getElementById('btn-en') },
-    { ko: document.getElementById('btn-ko-m'), en: document.getElementById('btn-en-m') },
-  ];
-
-  pairs.forEach(({ ko, en }) => {
-    if (!ko || !en) return;
-
-    if (lang === 'ko') {
-      ko.className = 'font-bold opacity-100';
-      en.className = 'font-bold opacity-70 hover:opacity-100';
-    } else {
-      en.className = 'font-bold opacity-100';
-      ko.className = 'font-bold opacity-70 hover:opacity-100';
-    }
-  });
-} else {
+      const btnKo = document.getElementById('btn-ko');
+      const btnEn = document.getElementById('btn-en');
+      if (!btnKo || !btnEn) return;
+    
+      if (lang === 'ko') {
+        btnKo.className = 'font-bold opacity-100';
+        btnEn.className = 'font-bold opacity-70 hover:opacity-100';
+      } else {
         btnEn.className = 'font-bold opacity-100';
         btnKo.className = 'font-bold opacity-70 hover:opacity-100';
       }
@@ -389,43 +408,26 @@
 <script>
   const nav = document.getElementById('site-nav');
   const menu = document.getElementById('nav-menu');
-  const mobileBtn = document.getElementById('btn-mobile-menu');
   const hero = document.getElementById('hero');
 
-  function setNavTheme(isLightBg) {
-  if (!nav) return;
+ function setNavTheme(isLightBg) {
+  if (!nav || !menu) return;
 
-  // ✅ 상단 bar 배경
   if (isLightBg) {
     nav.classList.remove('bg-transparent');
     nav.classList.add('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
+
+    menu.classList.remove('text-white', 'nav-dark');
+    menu.classList.add('text-gray-900', 'nav-light');   // ✅ 추가
   } else {
     nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
     nav.classList.add('bg-transparent');
-  }
 
-  // ✅ 데스크톱 메뉴 글자색
-  if (menu) {
-    if (isLightBg) {
-      menu.classList.remove('text-white', 'nav-dark');
-      menu.classList.add('text-gray-900', 'nav-light');
-    } else {
-      menu.classList.remove('text-gray-900', 'nav-light');
-      menu.classList.add('text-white', 'nav-dark');
-    }
-  }
-
-  // ✅ 모바일 햄버거(아이콘) 색상
-  if (mobileBtn) {
-    if (isLightBg) {
-      mobileBtn.classList.remove('text-white');
-      mobileBtn.classList.add('text-gray-900');
-    } else {
-      mobileBtn.classList.remove('text-gray-900');
-      mobileBtn.classList.add('text-white');
-    }
+    menu.classList.remove('text-gray-900', 'nav-light');
+    menu.classList.add('text-white', 'nav-dark');       // ✅ 추가
   }
 }
+
 
   function onScroll() {
     const y = window.scrollY || document.documentElement.scrollTop;
@@ -439,138 +441,93 @@
 </script>
 
 <script>
-  // ✅ 모바일 햄버거 메뉴 토글
-  (function () {
-    const btn = document.getElementById('btn-mobile-menu');
-    const panel = document.getElementById('nav-mobile-panel');
-    const nav = document.getElementById('site-nav');
+  // ✅ 1) Formspree 엔드포인트만 본인 것으로 교체
+  const FORM_ENDPOINT = "https://formspree.io/f/xaqnngyy"; // ← 여기 바꾸세요
 
-    if (!btn || !panel || !nav) return;
+  const openBtn = document.getElementById("btn-inquiry");
+  const modal = document.getElementById("inquiry-modal");
+  const backdrop = document.getElementById("inquiry-backdrop");
+  const closeBtn = document.getElementById("btn-close-inquiry");
+  const cancelBtn = document.getElementById("btn-cancel-inquiry");
+  const form = document.getElementById("inquiry-form");
+  const statusEl = document.getElementById("inquiry-status");
+  const submitBtn = document.getElementById("btn-submit-inquiry");
 
-    function openMenu() {
-      panel.classList.remove('hidden');
-      btn.setAttribute('aria-expanded', 'true');
+  function openModal() {
+    if (!modal) return;
+    modal.classList.remove("hidden");
+    setStatus(""); // 초기화
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.add("hidden");
+  }
+
+  function setStatus(msg, ok) {
+    if (!statusEl) return;
+    if (!msg) {
+      statusEl.classList.add("hidden");
+      statusEl.textContent = "";
+      return;
+    }
+    statusEl.classList.remove("hidden");
+    statusEl.className = "text-sm mb-3 " + (ok ? "text-green-700" : "text-red-700");
+    statusEl.textContent = msg;
+  }
+
+  openBtn?.addEventListener("click", openModal);
+  closeBtn?.addEventListener("click", closeModal);
+  cancelBtn?.addEventListener("click", closeModal);
+  backdrop?.addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  // ✅ Formspree로 비동기 전송(페이지 이동 없이)
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    setStatus("");
+
+    if (!FORM_ENDPOINT || FORM_ENDPOINT.includes("abcdwxyz")) {
+      setStatus("Form endpoint가 설정되지 않았습니다. FORM_ENDPOINT를 교체하세요.", false);
+      return;
     }
 
-    function closeMenu() {
-      panel.classList.add('hidden');
-      btn.setAttribute('aria-expanded', 'false');
+    submitBtn.disabled = true;
+    submitBtn.classList.add("opacity-70");
+
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Accept": "application/json" },
+        body: formData
+      });
+
+      if (res.ok) {
+        setStatus("문의가 전송되었습니다. 감사합니다.", true);
+        form.reset();
+        // 1.2초 후 자동 닫기(원치 않으면 제거)
+        setTimeout(closeModal, 1200);
+      } else {
+        setStatus("전송에 실패했습니다. 잠시 후 다시 시도해주세요.", false);
+      }
+    } catch (err) {
+      setStatus("네트워크 오류로 전송하지 못했습니다.", false);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("opacity-70");
     }
-
-    function toggleMenu() {
-      panel.classList.contains('hidden') ? openMenu() : closeMenu();
-    }
-
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleMenu();
-    });
-
-    // 메뉴 항목/언어 버튼 누르면 닫기
-    panel.addEventListener('click', (e) => {
-      if (e.target.closest('a')) closeMenu();
-      if (e.target.closest('#btn-ko-m') || e.target.closest('#btn-en-m')) closeMenu();
-    });
-
-    // nav 밖 클릭 시 닫기
-    document.addEventListener('click', (e) => {
-      if (!nav.contains(e.target)) closeMenu();
-    });
-
-    // 화면이 md 이상으로 커지면 닫기
-    window.addEventListener('resize', () => {
-      if (window.matchMedia('(min-width: 768px)').matches) closeMenu();
-    });
-
-    window.addEventListener('hashchange', closeMenu);
-  })();
+  });
 </script>
-
-
 
 
     
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
