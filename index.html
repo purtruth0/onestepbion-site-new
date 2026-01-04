@@ -70,7 +70,7 @@
      <div class="max-w-none w-full px-6 h-20 flex items-center justify-between">
         <div class="flex items-center">
          <a href="index.html#hero">
-          <img src="./assets/images/logo.png" alt="OneStepBion 로고" class="h-16 w-auto">
+          <img id="site-logo" src="./assets/images/logo.png" alt="OneStepBion 로고" class="h-16 w-auto">
          </a>
         </div>
           
@@ -463,6 +463,11 @@
   const toggleBtn   = document.getElementById('nav-toggle');
   const hero = document.getElementById('hero');
 
+      // ✅ 추가
+  const logo = document.getElementById('site-logo');
+  const logoDarkSrc  = "./assets/images/logo.png";
+  const logoLightSrc = "./assets/images/logo-white.png";
+
   function applyMenuTheme(el, isLightBg) {
     if (!el) return;
     if (isLightBg) {
@@ -484,7 +489,9 @@
       nav.classList.remove('bg-white/90', 'backdrop-blur-md', 'border-b', 'border-gray-100');
       nav.classList.add('bg-transparent');
     }
-
+    // ✅ 추가: 로고도 배경에 맞춰 변경
+    if (logo) logo.src = isLightBg ? logoDarkSrc : logoLightSrc;
+      
     applyMenuTheme(menuDesktop, isLightBg);
     applyMenuTheme(toggleBtn,   isLightBg);
   }
@@ -618,6 +625,7 @@
     
 </body>
 </html>
+
 
 
 
